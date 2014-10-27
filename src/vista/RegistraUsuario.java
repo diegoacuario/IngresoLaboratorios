@@ -3,27 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package demo;
+package vista;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import modelo.Usuario;
 
 /**
  *
  * @author AYLEEN ROMERO PATIÑO
  */
 public class RegistraUsuario extends javax.swing.JDialog {
-    
+
+    private final Usuario u;
+    private final MenuAdministrador m;
+
     /**
      * Creates new form RegistraPersona
+     *
+     * @param parent
+     * @param modal
+     * @param m
+     * @param u
      */
-    public RegistraUsuario(java.awt.Frame parent, boolean modal) {
+    public RegistraUsuario(java.awt.Frame parent, boolean modal, MenuAdministrador m, Usuario u) {
         super(parent, modal);
+        this.u = u;
+        this.m = m;
         this.setUndecorated(true);//quita bordes a jframe
-
         initComponents();
-
+        if (u.getRolUsuario() == 2) {
+            btnEli.setVisible(false);
+        }
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
-
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
 
@@ -41,19 +52,20 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new TextFieldPersonal();
+        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new TextFieldPersonal();
+        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new TextFieldPersonal();
+        jTextField3 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new TextFieldPersonal();
+        jTextField4 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEli = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new TextFieldPersonal();
-        jPasswordField1 = new PasswordPersonal();
+        jTextField6 = new javax.swing.JTextField();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -181,13 +193,13 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 2;
         jPanel1.add(jButton1, gridBagConstraints);
 
-        jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        jButton2.setText("Guardar");
+        btnEli.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnEli.setText("Eliminar");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 2;
-        jPanel1.add(jButton2, gridBagConstraints);
+        jPanel1.add(btnEli, gridBagConstraints);
 
         jLabel6.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -220,6 +232,14 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         jPanel1.add(jPasswordField1, gridBagConstraints);
 
+        jButton3.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jButton3.setText("Guardar");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 2;
+        jPanel1.add(jButton3, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         setSize(new java.awt.Dimension(678, 465));
@@ -228,6 +248,10 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
+        if (m != null) {
+            m.setVisible(true);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -245,76 +269,35 @@ public class RegistraUsuario extends javax.swing.JDialog {
         char c = evt.getKeyChar();
         if (c < '0' || c > '9') {
             evt.consume();
-        } 
+        }
     }//GEN-LAST:event_jTextField6KeyTyped
 
     private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
         char c = evt.getKeyChar();
-        c=(c+"").toLowerCase().charAt(0);
-        if ((c < 'a' || c > 'z')&&c!='ñ'&&c!=' ') {
+        c = (c + "").toLowerCase().charAt(0);
+        if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
             evt.consume();
-        } 
+        }
     }//GEN-LAST:event_jTextField3KeyTyped
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
         char c = evt.getKeyChar();
-        c=(c+"").toLowerCase().charAt(0);
-        if ((c < 'a' || c > 'z')&&c!='ñ'&&c!=' ') {
+        c = (c + "").toLowerCase().charAt(0);
+        if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
             evt.consume();
-        } 
+        }
     }//GEN-LAST:event_jTextField2KeyTyped
 
     private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
-        String val=jTextField4.getText();
+        String val = jTextField4.getText();
         jTextField4.setText(val.toLowerCase());
     }//GEN-LAST:event_jTextField4KeyReleased
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistraUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistraUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistraUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistraUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                RegistraUsuario dialog = new RegistraUsuario(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEli;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -322,11 +305,11 @@ public class RegistraUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private PasswordPersonal jPasswordField1;
-    private TextFieldPersonal jTextField1;
-    private TextFieldPersonal jTextField2;
-    private TextFieldPersonal jTextField3;
-    private TextFieldPersonal jTextField4;
-    private TextFieldPersonal jTextField6;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

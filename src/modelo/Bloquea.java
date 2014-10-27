@@ -1,4 +1,4 @@
-package demo;
+package modelo;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,7 +34,7 @@ public class Bloquea {
                     public void run() {
                         front();
                     }
-                }, 50, 50, TimeUnit.MILLISECONDS); //comienza dentro de 1/2 segundo y luego se repite cada N segundos
+                }, 1, 1, TimeUnit.MILLISECONDS); //comienza dentro de 1/2 segundo y luego se repite cada N segundos
     }
 
     /**

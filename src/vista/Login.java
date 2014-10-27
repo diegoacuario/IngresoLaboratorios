@@ -1,7 +1,10 @@
-package demo;
+package vista;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import controlador.Funciones;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Properties;
+import modelo.Bloquea;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 
@@ -11,15 +14,36 @@ import modelo.Usuario;
  */
 public class Login extends javax.swing.JFrame {
 
+    private final Properties fileConfig;
+    private final String ip;
+    private final Usuario p;
+    private String thisIp = null;
+
     /**
      * Creates new form jFrameBlocked
      */
     public Login() {
-
+        fileConfig = Funciones.getFileProperties("classes/confi.properties");
+        this.ip = fileConfig.getProperty("ip_servidor");
+        p = new Usuario(
+                "0705462745",
+                "admin",
+                "DIEGO JACINTO",
+                "ROMERO ARMIJOS",
+                "diegoacuario11@gmail.com",
+                "0969748969",
+                2);
         this.setUndecorated(true);//quita bordes a jframe
 
-        initComponents();
+        try {
+            thisIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException ex) {
 
+        }
+        initComponents();
+        if (!ip.equals(thisIp)) {
+            btnRegistrar.setVisible(false);
+        }
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
         this.setAlwaysOnTop(true);//siempre al frente       
@@ -42,11 +66,11 @@ public class Login extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        user = new TextFieldPersonal();
-        pass = new PasswordPersonal();
+        user = new javax.swing.JTextField();
+        pass = new javax.swing.JTextField();
         btnSalir = new javax.swing.JButton();
         btnEntrar = new javax.swing.JButton();
-        btnSalir1 = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,22 +81,26 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Usuario :");
+        jLabel1.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Cédula: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(40, 40, 5, 5);
         jPanel2.add(jLabel1, gridBagConstraints);
 
-        jLabel2.setText("Contraseña :");
+        jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jLabel2.setText("Contraseña: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(5, 40, 5, 5);
         jPanel2.add(jLabel2, gridBagConstraints);
 
+        user.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         user.setText("0705462745");
         user.setPreferredSize(new java.awt.Dimension(200, 32));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -85,6 +113,7 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(40, 5, 5, 40);
         jPanel2.add(user, gridBagConstraints);
 
+        pass.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         pass.setText("admin");
         pass.setPreferredSize(new java.awt.Dimension(200, 32));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -96,23 +125,11 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 40);
         jPanel2.add(pass, gridBagConstraints);
 
-        btnSalir.setText("Cancelar");
+        btnSalir.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(30, 0, 40, 8);
-        jPanel2.add(btnSalir, gridBagConstraints);
-
-        btnEntrar.setText("Entrar");
-        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEntrarActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -120,12 +137,13 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(30, 0, 40, 8);
-        jPanel2.add(btnEntrar, gridBagConstraints);
+        jPanel2.add(btnSalir, gridBagConstraints);
 
-        btnSalir1.setText("Registrar");
-        btnSalir1.addActionListener(new java.awt.event.ActionListener() {
+        btnEntrar.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalir1ActionPerformed(evt);
+                btnEntrarActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -133,7 +151,21 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(30, 0, 40, 8);
-        jPanel2.add(btnSalir1, gridBagConstraints);
+        jPanel2.add(btnEntrar, gridBagConstraints);
+
+        btnRegistrar.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(30, 0, 40, 8);
+        jPanel2.add(btnRegistrar, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -146,30 +178,41 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        System.exit(0);
+        new ClaveUsuario(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        Usuario p = new Usuario(
-                "0705462745",
-                "admin",
-                "DIEGO JACINTO",
-                "ROMERO ARMIJOS",
-                "diegoacuario11@gmail.com",
-                "0969748969",
-                1);
-        if (this.user.getText().equals("0705462745") && this.pass.getText().equals("admin")) {
-            LaboratoriosTodos d = new LaboratoriosTodos();
-            d.setVisible(true);
-            this.dispose();
+
+        if (p.getRolUsuario() == 1) {
+            if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
+                this.dispose();
+                MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, p);
+                m.setVisible(true);
+
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Acceso denegado");
+            if (ip.equals(thisIp)) {
+                if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
+                    SeleccioneLaboratorio d = new SeleccioneLaboratorio(p);
+                    d.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                }
+            } else {
+                if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
+                    Menu m = new Menu(null, p);
+                    m.setVisible(true);
+                    this.dispose();
+                }
+            }
         }
+
     }//GEN-LAST:event_btnEntrarActionPerformed
 
-    private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
-        new RegistraUsuario(this, rootPaneCheckingEnabled).setVisible(true);
-    }//GEN-LAST:event_btnSalir1ActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        new RegistraUsuario(this, rootPaneCheckingEnabled, null, p).setVisible(true);
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,13 +253,13 @@ public class Login extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnSalir;
-    private javax.swing.JButton btnSalir1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private PasswordPersonal pass;
-    private TextFieldPersonal user;
+    private javax.swing.JTextField pass;
+    private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }

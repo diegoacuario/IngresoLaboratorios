@@ -1,25 +1,32 @@
-package demo;
+package vista;
 
+import modelo.Bloquea;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import modelo.Laboratorio;
+import modelo.Usuario;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class LaboratoriosTodos extends javax.swing.JFrame {
-
+public class SeleccioneLaboratorio extends javax.swing.JFrame {
+private Laboratorio l;
+private final Usuario u;
     /**
      * Creates new form jFrameGUI
+     * @param u
      */
-    public LaboratoriosTodos() {
+    public SeleccioneLaboratorio(Usuario u) {
+        this.u=u;
         this.setUndecorated(true);//quita bordes a jframe
-
         initComponents();
-
+        lblNombre.setText(lblNombre.getText() + u.getNombres() + " " + u.getApellidos());
+        
+        
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
         this.setAlwaysOnTop(true);//siempre al frente       
@@ -34,11 +41,11 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
                 botones[i][j].setSize(200, 300);
                 botones[i][j].setBackground(Color.green);
                 
-                if (j==3) {
-                     botones[i][j].setBackground(Color.red);
+                if (j == 3) {
+                    botones[i][j].setBackground(Color.red);
                 }
-                if (i==2) {
-                     botones[i][j].setBackground(Color.yellow);
+                if (i == 2) {
+                    botones[i][j].setBackground(Color.yellow);
                 }
                 jPanel2.add(botones[i][j]);
                 botones[i][j].addActionListener(new ActionListener() {
@@ -50,12 +57,14 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
         }
         jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
     }
-
+    
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
         JButton boton = (JButton) evt.getSource();
         if (boton.getBackground().equals(Color.green)) {
-            new UnLaboratorio().setVisible(true);
-        dispose();
+            l = new Laboratorio("Sistemas", "S03", "Laboratorio de sistemas");
+            SeleccioneEquipo e = new SeleccioneEquipo(l,u);
+            e.setVisible(true);
+            dispose();
         } else if (boton.getBackground().equals(Color.yellow)) {
             JOptionPane.showMessageDialog(rootPane, "El laboratorio no esta disponible");
         } else if (boton.getBackground().equals(Color.red)) {
@@ -63,7 +72,6 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
         }
         
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -80,6 +88,7 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        lblNombre = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Acceso correcto");
@@ -103,9 +112,9 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 0.3;
         jPanel1.add(jScrollPane1, gridBagConstraints);
@@ -115,9 +124,9 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
         jLabel1.setText("Selecione el laboratorio al que desea acceder");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.weighty = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(18, 100, 18, 100);
+        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 100);
         jPanel1.add(jLabel1, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
@@ -132,6 +141,16 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         jPanel1.add(jButton1, gridBagConstraints);
 
+        lblNombre.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre.setText("Bienvenido(a): ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weighty = 0.4;
+        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 100);
+        jPanel1.add(lblNombre, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -145,57 +164,13 @@ public class LaboratoriosTodos extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LaboratoriosTodos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LaboratoriosTodos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LaboratoriosTodos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LaboratoriosTodos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LaboratoriosTodos().setVisible(true);
-            }
-        });
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }
