@@ -5,8 +5,13 @@
  */
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesUsuario;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import modelo.Usuario;
+import modelo.Usuarios;
 
 /**
  *
@@ -14,8 +19,11 @@ import modelo.Usuario;
  */
 public class RegistraUsuario extends javax.swing.JDialog {
 
-    private final Usuario u;
+    private Usuarios u;
     private final MenuAdministrador m;
+    private final Funciones f;
+    private final FuncionesUsuario fUser;
+    private Usuarios user;
 
     /**
      * Creates new form RegistraPersona
@@ -25,15 +33,30 @@ public class RegistraUsuario extends javax.swing.JDialog {
      * @param m
      * @param u
      */
-    public RegistraUsuario(java.awt.Frame parent, boolean modal, MenuAdministrador m, Usuario u) {
+    public RegistraUsuario(java.awt.Frame parent, boolean modal, MenuAdministrador m, Usuarios u) {
         super(parent, modal);
         this.u = u;
         this.m = m;
-        this.setUndecorated(true);//quita bordes a jframe
         initComponents();
-        if (u.getRolUsuario() == 2) {
-            btnEli.setVisible(false);
+        if (m == null && u != null) {
+            btnEli.setVisible(true);
+            txtCedula.setText(u.getCedula());
+            txtCedula.setEditable(false);
+            txtNombres.setText(u.getNombres());
+            txtNombres.setEditable(false);
+            txtApellidos.setText(u.getApellidos());
+            txtApellidos.setEditable(false);
+            txtClave.setText(u.getClave());
+            txtCelular.setText(u.getCelular());
+            txtCorreo.setText(u.getCorreo());
+            btnGuardar.setText("Actualizar");
         }
+
+        f = new Funciones();
+        fUser = new FuncionesUsuario();
+        this.setUndecorated(true);//quita bordes a jframe
+
+        btnEli.setVisible(false);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
@@ -52,20 +75,20 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtApellidos = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombres = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         btnEli = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jButton3 = new javax.swing.JButton();
+        txtCelular = new javax.swing.JTextField();
+        txtClave = new javax.swing.JPasswordField();
+        btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,15 +101,18 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jTextField1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtCedula.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtCedulaActionPerformed(evt);
             }
         });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCedulaKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
+                txtCedulaKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -97,7 +123,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField1, gridBagConstraints);
+        jPanel1.add(txtCedula, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -108,10 +134,10 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel2, gridBagConstraints);
 
-        jTextField2.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtApellidos.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField2KeyTyped(evt);
+                txtApellidosKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -121,7 +147,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 400;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField2, gridBagConstraints);
+        jPanel1.add(txtApellidos, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -132,10 +158,10 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel3, gridBagConstraints);
 
-        jTextField3.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNombres.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtNombres.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField3KeyTyped(evt);
+                txtNombresKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -145,7 +171,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 400;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField3, gridBagConstraints);
+        jPanel1.add(txtNombres, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -156,10 +182,10 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel4, gridBagConstraints);
 
-        jTextField4.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCorreo.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField4KeyReleased(evt);
+                txtCorreoKeyReleased(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -169,7 +195,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 400;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField4, gridBagConstraints);
+        jPanel1.add(txtCorreo, gridBagConstraints);
 
         jLabel5.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -195,6 +221,11 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
         btnEli.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         btnEli.setText("Eliminar");
+        btnEli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -210,10 +241,10 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel6, gridBagConstraints);
 
-        jTextField6.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCelular.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtCelular.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField6KeyTyped(evt);
+                txtCelularKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -222,23 +253,28 @@ public class RegistraUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 220;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField6, gridBagConstraints);
+        jPanel1.add(txtCelular, gridBagConstraints);
 
-        jPasswordField1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtClave.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 220;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel1.add(jPasswordField1, gridBagConstraints);
+        jPanel1.add(txtClave, gridBagConstraints);
 
-        jButton3.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        jButton3.setText("Guardar");
+        btnGuardar.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 2;
-        jPanel1.add(jButton3, gridBagConstraints);
+        jPanel1.add(btnGuardar, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -254,50 +290,150 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtCedulaActionPerformed
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
         char c = evt.getKeyChar();
         if (c < '0' || c > '9') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField1KeyTyped
+    }//GEN-LAST:event_txtCedulaKeyTyped
 
-    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+    private void txtCelularKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCelularKeyTyped
         char c = evt.getKeyChar();
         if (c < '0' || c > '9') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField6KeyTyped
+    }//GEN-LAST:event_txtCelularKeyTyped
 
-    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+    private void txtNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombresKeyTyped
         char c = evt.getKeyChar();
         c = (c + "").toLowerCase().charAt(0);
         if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField3KeyTyped
+    }//GEN-LAST:event_txtNombresKeyTyped
 
-    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+    private void txtApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidosKeyTyped
         char c = evt.getKeyChar();
         c = (c + "").toLowerCase().charAt(0);
         if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField2KeyTyped
+    }//GEN-LAST:event_txtApellidosKeyTyped
 
-    private void jTextField4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyReleased
-        String val = jTextField4.getText();
-        jTextField4.setText(val.toLowerCase());
-    }//GEN-LAST:event_jTextField4KeyReleased
+    private void txtCorreoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCorreoKeyReleased
+        String val = txtCorreo.getText();
+        txtCorreo.setText(val.toLowerCase());
+    }//GEN-LAST:event_txtCorreoKeyReleased
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        String reg, men = "guardados", men1 = "guardar";
+        try {
+            if (btnGuardar.getText().equals("Actualizar")) {
+                
+                reg = fUser.editarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/editar/",
+                        u.getIdUsuario(),
+                        txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
+                        txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), u.getRolUsuario());
+
+                men = "actualizados";
+                men1 = "actualizar";
+            } else {
+                reg = fUser.registrarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/registro/",
+                        txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
+                        txtApellidos.getText(), txtCorreo.getText(), txtCedula.getText(), 0);
+            }
+
+            if (reg.equals("true")) {
+                JOptionPane.showMessageDialog(rootPane, "Datos " + men + " correctamente");
+                dispose();
+                if (m != null) {
+                    m.setVisible(true);
+                }
+            } else {
+                reg = "false";
+            }
+
+        } catch (Exception ex) {
+            reg = "false";
+        }
+        if (reg.equals("false")) {
+            JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtCedulaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyReleased
+        if (u != null) {
+            String ced = txtCedula.getText();
+            if (ced.length() == 10) {
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + ced;
+                user = fUser.obtieneDatosUsuario(f.obtieneJson(url));
+                if (user != null) {
+                    btnEli.setVisible(true);
+                    txtNombres.setText(user.getNombres());
+                    txtApellidos.setText(user.getApellidos());
+                    txtClave.setText(user.getClave());
+                    txtCelular.setText(user.getCelular());
+                    txtCorreo.setText(user.getCorreo());
+                    btnGuardar.setText("Actualizar");
+                } else {
+                    btnEli.setVisible(false);
+                }
+            } else {
+                btnEli.setVisible(false);
+                txtNombres.setText("");
+                txtApellidos.setText("");
+                txtClave.setText("");
+                txtCelular.setText("");
+                txtCorreo.setText("");
+            }
+        }
+
+    }//GEN-LAST:event_txtCedulaKeyReleased
+
+    private void btnEliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliActionPerformed
+        int x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar el usuario:\n" + user.getNombres() + " " + user.getApellidos());
+        int y = -1;
+        if (x == 0) {
+            if (u.getCedula().equals(user.getCedula())) {
+                x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar su propio usuario");
+                y = x;
+            }
+            if (x == 0) {
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web"
+                ) + "webresources/modelo.usuarios/eliminar/" + user.getIdUsuario();
+                String val = f.obtieneTexto(url);
+                if (val.equals("true")) {
+                    JOptionPane.showMessageDialog(rootPane, "Usuario eliminado correctamente");
+                    if (y == x) {
+                        dispose();
+                        if (m != null) {
+                            new Login().setVisible(true);
+                            m.dispose();
+                        }
+                    }
+                    btnEli.setVisible(false);
+                    txtNombres.setText("");
+                    txtApellidos.setText("");
+                    txtClave.setText("");
+                    txtCelular.setText("");
+                    txtCorreo.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo eliminar el usuario");
+                }
+            }
+
+        }
+    }//GEN-LAST:event_btnEliActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEli;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -305,11 +441,11 @@ public class RegistraUsuario extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtCedula;
+    private javax.swing.JTextField txtCelular;
+    private javax.swing.JPasswordField txtClave;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 }

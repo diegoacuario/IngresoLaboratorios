@@ -5,7 +5,7 @@
  */
 package vista;
 
-import modelo.Usuario;
+import modelo.Usuarios;
 
 /**
  *
@@ -14,14 +14,14 @@ import modelo.Usuario;
 public class Menu extends javax.swing.JFrame {
 
     private MenuEstudiante m;
-    private final Usuario u;
+    private final Usuarios u;
 
     /**
      * Creates new form NewJFrame
      * @param m
      * @param u
      */
-    public Menu(MenuEstudiante m, Usuario u) {
+    public Menu(MenuEstudiante m, Usuarios u) {
         this.u = u;
         if (m == null) {
             this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u);

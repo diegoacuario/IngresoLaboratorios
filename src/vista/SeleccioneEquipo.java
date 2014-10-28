@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import modelo.Laboratorio;
-import modelo.Usuario;
+import modelo.Laboratorios;
+import modelo.Usuarios;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
@@ -15,7 +15,7 @@ import modelo.Usuario;
  */
 public class SeleccioneEquipo extends javax.swing.JFrame {
 
-    private final Usuario u;
+    private final Usuarios u;
 
     /**
      * Creates new form jFrameGUI
@@ -23,7 +23,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
      * @param l
      * @param u
      */
-    public SeleccioneEquipo(Laboratorio l, Usuario u) {
+    public SeleccioneEquipo(Laboratorios l, Usuarios u) {
         this.u = u;
         this.setUndecorated(true);//quita bordes a jframe
 

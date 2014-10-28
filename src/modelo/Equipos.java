@@ -9,13 +9,14 @@ package modelo;
  *
  * @author AYLEEN ROMERO PATIÑO
  */
-public class Equipo {
+public class Equipos {
 
     private String mac;
     private String ip;
     private int numero;
     private int estado;
-    private Laboratorio lab;
+    private int idEquipo;
+    private Laboratorios lab;
 
     public String getMac() {
         return mac;
@@ -49,11 +50,21 @@ public class Equipo {
         this.estado = estado;
     }
 
-    public Laboratorio getLab() {
+    public int getIdEquipo() {
+        return idEquipo;
+    }
+
+    public void setIdEquipo(int idEquipo) {
+        this.idEquipo = idEquipo;
+    }
+
+    public Laboratorios getLab() {
         return lab;
     }
 
-    public void setLab(Laboratorio lab) {
+    public void setLab(Laboratorios lab) {
         this.lab = lab;
     }
+
+    
 }

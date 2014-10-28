@@ -9,19 +9,40 @@ package modelo;
  *
  * @author AYLEEN ROMERO PATIÑO
  */
-public class Usuario {
+public class Usuarios {
+
     private String cedula;
     private String clave;
     private String nombres;
-    private String apellidos;    
-    private String correo;    
-    private String celular;    
+    private String apellidos;
+    private String correo;
+    private String celular;
     private int rolUsuario;
+    private int idUsuario;
 
-    public Usuario() {
+    public Usuarios(String cedula, String clave, String nombres, String apellidos, String correo, String celular, int rolUsuario, int idUsuario) {
+        this.cedula = cedula;
+        this.clave = clave;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.correo = correo;
+        this.celular = celular;
+        this.rolUsuario = rolUsuario;
+        this.idUsuario = idUsuario;
     }
 
-    public Usuario(String cedula, String clave, String nombres, String apellidos, String correo, String celular, int rolUsuario) {
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public Usuarios() {
+    }
+
+    public Usuarios(String cedula, String clave, String nombres, String apellidos, String correo, String celular, int rolUsuario) {
         this.cedula = cedula;
         this.clave = clave;
         this.nombres = nombres;
@@ -86,7 +107,5 @@ public class Usuario {
     public void setRolUsuario(int rolUsuario) {
         this.rolUsuario = rolUsuario;
     }
-    
-    
-    
+
 }

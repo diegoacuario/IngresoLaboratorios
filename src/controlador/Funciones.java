@@ -5,21 +5,31 @@
  */
 package controlador;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import modelo.Sesiones;
+import modelo.Usuarios;
 
 /**
  *
  * @author AYLEEN ROMERO PATIÑO
  */
 public class Funciones {
-      public static Properties getFileProperties(String url) {
+
+    public static Properties getFileProperties(String url) {
         Properties prop = null;
         try {
             CodeSource codeSource = Funciones.class.getProtectionDomain().getCodeSource();
@@ -36,4 +46,41 @@ public class Funciones {
         }
         return prop;
     }
+
+    public  ArrayList<Sesiones> obtieneSesiones(String formatoJSON) {
+        Gson gson = new Gson();
+        Type tipoObjeto = new TypeToken<List<Sesiones>>() {
+        }.getType();
+        ArrayList<Sesiones> sesiones = gson.fromJson(formatoJSON, tipoObjeto);
+        return sesiones;
+    }
+
+    public  String obtieneJson(String url) {
+        String json = "", lin;
+        try {
+            URL pagina = new URL(url);
+            BufferedReader in = new BufferedReader(new InputStreamReader(pagina.openStream()));
+            while ((lin = in.readLine()) != null) {
+                json += lin + "\n";
+            }
+
+        } catch (IOException ex) {
+        }
+        return json;
+    }
+    public  String obtieneTexto(String url) {
+        String json = "", lin;
+        try {
+            URL pagina = new URL(url);
+            BufferedReader in = new BufferedReader(new InputStreamReader(pagina.openStream()));
+            while ((lin = in.readLine()) != null) {
+                json += lin;
+            }
+
+        } catch (IOException ex) {
+        }
+        return json;
+    }
+    
+
 }

@@ -9,19 +9,37 @@ package modelo;
  *
  * @author AYLEEN ROMERO PATIÑO
  */
-public class Laboratorio {
+public class Laboratorios {
 
-    public Laboratorio() {
-    }
+    private int idLaboratorio;
+    private String nombre;
+    private String codigo;
+    private String descripcion;
 
-    public Laboratorio(String nombre, String codigo, String descripcion) {
+    public Laboratorios(int idLaboratorio, String nombre, String codigo, String descripcion) {
+        this.idLaboratorio = idLaboratorio;
         this.nombre = nombre;
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
-    private String nombre;
-    private String codigo;
-    private String descripcion;
+
+    public Laboratorios(String nombre, String codigo, String descripcion) {
+        this.nombre = nombre;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+    }
+
+    public Laboratorios() {
+    }
+    
+
+    public int getIdLaboratorio() {
+        return idLaboratorio;
+    }
+
+    public void setIdLaboratorio(int idLaboratorio) {
+        this.idLaboratorio = idLaboratorio;
+    }
 
     public String getNombre() {
         return nombre;
@@ -46,5 +64,7 @@ public class Laboratorio {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     
+
 }

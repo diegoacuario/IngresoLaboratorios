@@ -6,7 +6,7 @@
 package vista;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import modelo.Usuario;
+import modelo.Usuarios;
 
 /**
  *
@@ -15,7 +15,7 @@ import modelo.Usuario;
 public class MenuEstudiante extends javax.swing.JDialog {
 
     private final Menu m;
-    private final Usuario u;
+    private final Usuarios u;
 
     /**
      * Creates new form RegistraPersona
@@ -24,7 +24,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
      * @param m
      * @param u
      */
-    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuario u) {
+    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u) {
         super(parent, modal);
         this.m = m;
         this.u = u;

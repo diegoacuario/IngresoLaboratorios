@@ -6,21 +6,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import modelo.Laboratorio;
-import modelo.Usuario;
+import modelo.Laboratorios;
+import modelo.Usuarios;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
 public class SeleccioneLaboratorio extends javax.swing.JFrame {
-private Laboratorio l;
-private final Usuario u;
+private Laboratorios l;
+private final Usuarios u;
     /**
      * Creates new form jFrameGUI
      * @param u
      */
-    public SeleccioneLaboratorio(Usuario u) {
+    public SeleccioneLaboratorio(Usuarios u) {
         this.u=u;
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
@@ -61,7 +61,7 @@ private final Usuario u;
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
         JButton boton = (JButton) evt.getSource();
         if (boton.getBackground().equals(Color.green)) {
-            l = new Laboratorio("Sistemas", "S03", "Laboratorio de sistemas");
+            l = new Laboratorios("Sistemas", "S03", "Laboratorio de sistemas");
             SeleccioneEquipo e = new SeleccioneEquipo(l,u);
             e.setVisible(true);
             dispose();

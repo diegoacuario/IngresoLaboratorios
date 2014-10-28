@@ -7,7 +7,7 @@ package vista;
 
 import java.awt.Frame;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import modelo.Usuario;
+import modelo.Usuarios;
 
 /**
  *
@@ -15,7 +15,7 @@ import modelo.Usuario;
  */
 public class MenuAdministrador extends javax.swing.JDialog {
 
-    private final Usuario u;
+    private final Usuarios u;
 
     /**
      * Creates new form RegistraPersona
@@ -24,7 +24,7 @@ public class MenuAdministrador extends javax.swing.JDialog {
      * @param modal
      * @param u
      */
-    public MenuAdministrador(Frame parent, boolean modal, Usuario u) {
+    public MenuAdministrador(Frame parent, boolean modal, Usuarios u) {
         super(parent, modal);
         this.u = u;
         this.setUndecorated(true);//quita bordes a jframe

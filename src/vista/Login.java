@@ -1,12 +1,13 @@
 package vista;
 
 import controlador.Funciones;
+import controlador.FuncionesUsuario;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
 import modelo.Bloquea;
 import javax.swing.JOptionPane;
-import modelo.Usuario;
+import modelo.Usuarios;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
@@ -14,9 +15,9 @@ import modelo.Usuario;
  */
 public class Login extends javax.swing.JFrame {
 
-    private final Properties fileConfig;
+    public final Properties fileConfig;
     private final String ip;
-    private final Usuario p;
+    private Usuarios u;
     private String thisIp = null;
 
     /**
@@ -25,14 +26,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         fileConfig = Funciones.getFileProperties("classes/confi.properties");
         this.ip = fileConfig.getProperty("ip_servidor");
-        p = new Usuario(
-                "0705462745",
-                "admin",
-                "DIEGO JACINTO",
-                "ROMERO ARMIJOS",
-                "diegoacuario11@gmail.com",
-                "0969748969",
-                2);
+
         this.setUndecorated(true);//quita bordes a jframe
 
         try {
@@ -182,36 +176,35 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-
-        if (p.getRolUsuario() == 1) {
-            if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
-                this.dispose();
-                MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, p);
+        Funciones f = new Funciones();
+        FuncionesUsuario fu = new FuncionesUsuario();
+        String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
+        u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+        if (u != null) {
+            if (u.getRolUsuario() == 1) {
+                dispose();
+                MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
                 m.setVisible(true);
-
-            }
-        } else {
-            if (ip.equals(thisIp)) {
-                if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
-                    SeleccioneLaboratorio d = new SeleccioneLaboratorio(p);
+            } else {
+                if (ip.equals(thisIp)) {
+                    SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
                     d.setVisible(true);
                     this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
-                }
-            } else {
-                if (this.user.getText().equals(p.getCedula()) && this.pass.getText().equals(p.getClave())) {
-                    Menu m = new Menu(null, p);
+                    Menu m = new Menu(null, u);
                     m.setVisible(true);
                     this.dispose();
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
         }
+
 
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        new RegistraUsuario(this, rootPaneCheckingEnabled, null, p).setVisible(true);
+        new RegistraUsuario(this, rootPaneCheckingEnabled, null, u).setVisible(true);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
