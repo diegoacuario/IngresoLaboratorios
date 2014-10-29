@@ -19,6 +19,7 @@ public class ClaveUsuario extends javax.swing.JDialog {
 
     /**
      * Creates new form RegistraPersona
+     *
      * @param parent
      * @param modal
      */
@@ -26,6 +27,7 @@ public class ClaveUsuario extends javax.swing.JDialog {
         super(parent, modal);
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
+        txtClave.setText("admin");
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setAlwaysOnTop(true);//siempre al frente       
     }
@@ -42,9 +44,9 @@ public class ClaveUsuario extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtClave = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txtClave = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,22 +61,6 @@ public class ClaveUsuario extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         jPanel1.add(jLabel1, gridBagConstraints);
-
-        txtClave.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        txtClave.setText("admin");
-        txtClave.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtClaveKeyReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.ipadx = 256;
-        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(txtClave, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jButton1.setText("Aceptar");
@@ -103,9 +89,26 @@ public class ClaveUsuario extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 2;
         jPanel1.add(jButton2, gridBagConstraints);
 
+        txtClave.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtClave.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtClaveKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtClaveKeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 25, 0);
+        jPanel1.add(txtClave, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(678, 315));
+        setSize(new java.awt.Dimension(678, 349));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -122,22 +125,25 @@ public class ClaveUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtClaveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClaveKeyReleased
-        int x = evt.getKeyCode();
-        if (x == 10) {
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClaveKeyReleased
+
+    private void txtClaveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClaveKeyTyped
+        int c = evt.getKeyChar();
+        if (c == 10) {
             if (txtClave.getText().equals("admin")) {
                 System.exit(0);
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Clave incorrecta");
             }
-        }
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtClaveKeyReleased
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClaveKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtClave;
+    private javax.swing.JPasswordField txtClave;
     // End of variables declaration//GEN-END:variables
 }

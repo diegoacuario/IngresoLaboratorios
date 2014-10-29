@@ -1,5 +1,7 @@
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesLaboratorio;
 import modelo.Bloquea;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -14,63 +16,69 @@ import modelo.Usuarios;
  * @author diegoacuario
  */
 public class SeleccioneLaboratorio extends javax.swing.JFrame {
-private Laboratorios l;
-private final Usuarios u;
+
+    private Laboratorios l;
+    private final Usuarios u;
+    private Funciones f;
+    private FuncionesLaboratorio fl;
+
     /**
      * Creates new form jFrameGUI
+     *
      * @param u
      */
     public SeleccioneLaboratorio(Usuarios u) {
-        this.u=u;
+        this.u = u;
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
+        f = new Funciones();
+        fl = new FuncionesLaboratorio();
         lblNombre.setText(lblNombre.getText() + u.getNombres() + " " + u.getApellidos());
-        
-        
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
-        JButton botones[][] = new JButton[4][5];
-        for (int i = 0; i < botones.length; i++) {
-            for (int j = 0; j < botones[0].length; j++) {
-                botones[i][j] = new JButton();
-                botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-                botones[i][j].setText(((i + 1) + j * botones.length) + "");
-                botones[i][j].setSize(200, 300);
-                botones[i][j].setBackground(Color.green);
-                
-                if (j == 3) {
-                    botones[i][j].setBackground(Color.red);
+        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
+        int filas = 4;
+        int colExtra = 1;
+        if (lab.length % 4 == 0) {
+            colExtra = 0;
+        }
+        int col = (int) (lab.length / 4.0f) + colExtra;
+        int res = 4 - (filas * col) + lab.length;
+        int can = 0;
+        JButton laboratorios[][] = new JButton[filas][col];
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < col; j++) {
+                if (j < col - 1 || (j == col - 1 && i < res)) {
+                    laboratorios[i][j] = new JButton();
+                    laboratorios[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+                    laboratorios[i][j].setText(lab[can].getIdLaboratorio() + ":Lab" + (can + 1) + ": " + lab[can].getCodigo());
+                    laboratorios[i][j].setSize(200, 300);
+                    laboratorios[i][j].setToolTipText(lab[can].getNombre() + ": " + lab[can].getDescripcion());
+                    laboratorios[i][j].setBackground(Color.green);
+                    can++;
+                    jPanel2.add(laboratorios[i][j]);
+                    laboratorios[i][j].addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            SeleccioneLaboratorio.this.ejecutarAlPresionarBoton(evt);
+                        }
+                    });
                 }
-                if (i == 2) {
-                    botones[i][j].setBackground(Color.yellow);
-                }
-                jPanel2.add(botones[i][j]);
-                botones[i][j].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        ejecutarAlPresionarBoton(evt);
-                    }
-                });
             }
         }
-        jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
+        jPanel2.setLayout(new java.awt.GridLayout(filas, col, 10, 10));
     }
-    
+
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
         JButton boton = (JButton) evt.getSource();
         if (boton.getBackground().equals(Color.green)) {
-            l = new Laboratorios("Sistemas", "S03", "Laboratorio de sistemas");
-            SeleccioneEquipo e = new SeleccioneEquipo(l,u);
+            l = new Laboratorios(Integer.parseInt(boton.getText().split(":")[0]), boton.getToolTipText().split(": ")[0], boton.getText().split(": ")[1], boton.getToolTipText().split(": ")[1]);
+            SeleccioneEquipo e = new SeleccioneEquipo(l, u);
             e.setVisible(true);
             dispose();
-        } else if (boton.getBackground().equals(Color.yellow)) {
-            JOptionPane.showMessageDialog(rootPane, "El laboratorio no esta disponible");
-        } else if (boton.getBackground().equals(Color.red)) {
-            JOptionPane.showMessageDialog(rootPane, "El laboratorio esta lleno");
         }
-        
     }
 
     /**
@@ -164,7 +172,7 @@ private final Usuarios u;
     /**
      * @param args the command line arguments
      */
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

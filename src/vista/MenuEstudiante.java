@@ -5,7 +5,14 @@
  */
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesEquipo;
+import controlador.FuncionesSesiones;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import modelo.Sesiones;
 import modelo.Usuarios;
 
 /**
@@ -16,19 +23,27 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private final Menu m;
     private final Usuarios u;
+    private Sesiones idSesion;
+    private FuncionesSesiones fs;
+    private FuncionesEquipo fe;
+    private Funciones f;
 
     /**
      * Creates new form RegistraPersona
+     *
      * @param parent
      * @param modal
      * @param m
      * @param u
      */
-    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u) {
+    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u, Sesiones idSesion) {
         super(parent, modal);
         this.m = m;
         this.u = u;
-        
+        this.idSesion = idSesion;
+        fs = new FuncionesSesiones();
+        fe = new FuncionesEquipo();
+        f = new Funciones();
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
 
@@ -116,12 +131,30 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         dispose();
-        new RegistraUsuario(null, rootPaneCheckingEnabled, null,u).setVisible(true);
+        new RegistraUsuario(null, rootPaneCheckingEnabled, null, u).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       dispose();
-       new Login().setVisible(true);
+
+        String res = "false";
+        try {
+            res = fs.finSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/finSesion/", idSesion.getIdSesion());
+        } catch (Exception ex) {
+
+        }
+        if (res.equals("true")) {
+            String res2 = "false";
+            try {
+                res2 = fe.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
+                        idSesion.getIdEquipo().getIdEquipo(), 0);
+            } catch (Exception ex) {
+
+            }
+            dispose();
+            new Login().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Se perdio la conexión con el servidor");
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -196,7 +229,6 @@ public class MenuEstudiante extends javax.swing.JDialog {
 //            }
 //        });
 //    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;

@@ -2,6 +2,7 @@ package vista;
 
 import controlador.Funciones;
 import controlador.FuncionesUsuario;
+import controlador.Hilo;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -19,6 +20,7 @@ public class Login extends javax.swing.JFrame {
     private final String ip;
     private Usuarios u;
     private String thisIp = null;
+    private Hilo hilo = null;
 
     /**
      * Creates new form jFrameBlocked
@@ -36,7 +38,11 @@ public class Login extends javax.swing.JFrame {
         }
         initComponents();
         if (!ip.equals(thisIp)) {
+            hilo = new Hilo(thisIp,this,null);
+            hilo.start();
             btnRegistrar.setVisible(false);
+        } else {
+
         }
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
@@ -61,10 +67,10 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         user = new javax.swing.JTextField();
-        pass = new javax.swing.JTextField();
         btnSalir = new javax.swing.JButton();
         btnEntrar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
+        pass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,29 +101,27 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jLabel2, gridBagConstraints);
 
         user.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        user.setText("0705462745");
+        user.setText("1105581316");
         user.setPreferredSize(new java.awt.Dimension(200, 32));
+        user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                userKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                userKeyTyped(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 13;
+        gridBagConstraints.ipady = 30;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(40, 5, 5, 40);
+        gridBagConstraints.insets = new java.awt.Insets(40, 0, 5, 0);
         jPanel2.add(user, gridBagConstraints);
-
-        pass.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        pass.setText("admin");
-        pass.setPreferredSize(new java.awt.Dimension(200, 32));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 40);
-        jPanel2.add(pass, gridBagConstraints);
 
         btnSalir.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         btnSalir.setText("Salir");
@@ -161,6 +165,23 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(30, 0, 40, 8);
         jPanel2.add(btnRegistrar, gridBagConstraints);
 
+        pass.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        pass.setText("admin");
+        pass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                passKeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 57;
+        gridBagConstraints.ipady = 12;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel2.add(pass, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -191,7 +212,7 @@ public class Login extends javax.swing.JFrame {
                     d.setVisible(true);
                     this.dispose();
                 } else {
-                    Menu m = new Menu(null, u);
+                    Menu m = new Menu(null, u,null);
                     m.setVisible(true);
                     this.dispose();
                 }
@@ -206,6 +227,72 @@ public class Login extends javax.swing.JFrame {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         new RegistraUsuario(this, rootPaneCheckingEnabled, null, u).setVisible(true);
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void userKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyTyped
+
+    }//GEN-LAST:event_userKeyTyped
+
+    private void passKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passKeyTyped
+        int c = evt.getKeyChar();
+        if (user.getText().length() == 10 && c == 10) {
+            Funciones f = new Funciones();
+            FuncionesUsuario fu = new FuncionesUsuario();
+            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
+            u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+            if (u != null) {
+                if (u.getRolUsuario() == 1) {
+                    dispose();
+                    MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
+                    m.setVisible(true);
+                } else {
+                    if (ip.equals(thisIp)) {
+                        SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                        d.setVisible(true);
+                        this.dispose();
+                    } else {
+                        Menu m = new Menu(null, u,null);
+                        m.setVisible(true);
+                        this.dispose();
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+            }
+        }
+    }//GEN-LAST:event_passKeyTyped
+
+    private void userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyReleased
+        char c = evt.getKeyChar();
+
+        if (user.getText().length() == 10 && !pass.getText().isEmpty()) {
+            Funciones f = new Funciones();
+            FuncionesUsuario fu = new FuncionesUsuario();
+            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
+            u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+            if (u != null) {
+                if (u.getRolUsuario() == 1) {
+                    dispose();
+                    MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
+                    m.setVisible(true);
+                } else {
+                    if (ip.equals(thisIp)) {
+                        SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                        d.setVisible(true);
+                        this.dispose();
+                    } else {
+                        Menu m = new Menu(null, u,null);
+                        m.setVisible(true);
+                        this.dispose();
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+            }
+        }
+        if (c < '0' || c > '9') {
+            evt.consume();
+        }
+    }//GEN-LAST:event_userKeyReleased
 
     /**
      * @param args the command line arguments
@@ -252,7 +339,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField pass;
+    private javax.swing.JPasswordField pass;
     private javax.swing.JTextField user;
     // End of variables declaration//GEN-END:variables
 }

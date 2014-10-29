@@ -5,6 +5,14 @@
  */
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesEquipo;
+import controlador.FuncionesSesiones;
+import controlador.FuncionesUsuario;
+import java.net.InetAddress;
+import javax.swing.JOptionPane;
+import modelo.Equipos;
+import modelo.Sesiones;
 import modelo.Usuarios;
 
 /**
@@ -14,17 +22,58 @@ import modelo.Usuarios;
 public class Menu extends javax.swing.JFrame {
 
     private MenuEstudiante m;
+    private FuncionesSesiones fs;
+    private Funciones f;
+    private FuncionesEquipo fe;
     private final Usuarios u;
+    private int idSolicitud;
+    private Sesiones s;
 
     /**
      * Creates new form NewJFrame
+     *
      * @param m
      * @param u
      */
-    public Menu(MenuEstudiante m, Usuarios u) {
+    public Menu(MenuEstudiante m, Usuarios u, Sesiones s) {
         this.u = u;
+
+        fs = new FuncionesSesiones();
+        fe = new FuncionesEquipo();
+        f = new Funciones();
+        this.s = s;
+        if (s != null) {
+            idSolicitud = s.getIdSesion();
+        } else {
+            String res1;
+            idSolicitud = 0;
+            Equipos eqp =null;
+            try {
+
+               eqp = fe.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
+                res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
+                        eqp.getIdEquipo(), u.getIdUsuario());
+            } catch (Exception ex) {
+                res1 = "false";
+            }
+            if (res1.equals("false")) {
+                dispose();
+                new Login().setVisible(true);
+            } else {
+                String res = "false";
+                try {
+                    res = fe.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
+                            eqp.getIdEquipo(), 1);
+                } catch (Exception ex) {
+
+                }
+            }
+
+            idSolicitud = Integer.parseInt(res1);
+        }
+
         if (m == null) {
-            this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u);
+            this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u, s);
         }
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);//maximizado

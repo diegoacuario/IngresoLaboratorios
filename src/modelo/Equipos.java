@@ -16,7 +16,7 @@ public class Equipos {
     private int numero;
     private int estado;
     private int idEquipo;
-    private Laboratorios lab;
+    private Laboratorios idLaboratorio;
 
     public String getMac() {
         return mac;
@@ -58,13 +58,14 @@ public class Equipos {
         this.idEquipo = idEquipo;
     }
 
-    public Laboratorios getLab() {
-        return lab;
+    public Laboratorios getIdLaboratorio() {
+        return idLaboratorio;
     }
 
-    public void setLab(Laboratorios lab) {
-        this.lab = lab;
+    public void setIdLaboratorio(Laboratorios idLaboratorio) {
+        this.idLaboratorio = idLaboratorio;
     }
+
 
     
 }

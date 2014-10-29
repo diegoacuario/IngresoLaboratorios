@@ -1,11 +1,20 @@
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesEquipo;
+import controlador.FuncionesLaboratorio;
+import controlador.FuncionesSesiones;
 import modelo.Bloquea;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import modelo.Equipos;
 import modelo.Laboratorios;
 import modelo.Usuarios;
 
@@ -16,6 +25,9 @@ import modelo.Usuarios;
 public class SeleccioneEquipo extends javax.swing.JFrame {
 
     private final Usuarios u;
+    private Funciones f;
+    private FuncionesEquipo fl;
+    private FuncionesSesiones fs;
 
     /**
      * Creates new form jFrameGUI
@@ -28,35 +40,56 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         this.setUndecorated(true);//quita bordes a jframe
 
         initComponents();
+        f = new Funciones();
+        fl = new FuncionesEquipo();
+        fs = new FuncionesSesiones();
         lblNombre.setText(lblNombre.getText() + l.getNombre());
+        lblNombre.setToolTipText(l.getDescripcion());
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
-        JButton botones[][] = new JButton[4][5];
-        for (int i = 0; i < botones.length; i++) {
-            for (int j = 0; j < botones[0].length; j++) {
-                botones[i][j] = new JButton();
-                botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-                botones[i][j].setText(((i + 1) + j * botones.length) + "");
-                botones[i][j].setSize(200, 300);
-                botones[i][j].setBackground(Color.green);
-                botones[i][j].setToolTipText("Equipo disponible, clic para iniciar sesión");
-                if (i == 1) {
-                    botones[i][j].setBackground(Color.yellow);
-                    botones[i][j].setToolTipText("Equipo no disponible");
-                }
-                jPanel2.add(botones[i][j]);
-                botones[i][j].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        ejecutarAlPresionarBoton(evt);
-                    }
-                });
-            }
+        int idLaboratorio = l.getIdLaboratorio();
+        Equipos lab[] = fl.arrayToMatriz(fl.obtieneDatosEquipos(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/idLaboratorio=" + idLaboratorio)));
+        int filas = 4;
+        int colExtra = 1;
+        if (lab.length % 4 == 0) {
+            colExtra = 0;
         }
-        jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
+        int col = (int) (lab.length / 4.0f) + colExtra;
+        int res = 4 - (filas * col) + lab.length;
+        int can = 0;
+        JButton botones[][] = new JButton[filas][col];
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < col; j++) {
+                if (j < col - 1 || (j == col - 1 && i < res)) {
+                    botones[i][j] = new JButton();
+                    botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+                    botones[i][j].setText("Eqp-" + lab[can].getNumero() + ": " + lab[can].getIp());
+                    botones[i][j].setSize(200, 300);
+                    botones[i][j].setBackground(Color.green);
+                    botones[i][j].setToolTipText("Equipo disponible, clic para iniciar sesión");
+                    if (lab[can].getEstado() == 3) {
+                        botones[i][j].setBackground(Color.yellow);
+                        botones[i][j].setToolTipText("Equipo no disponible");
+                    }
+                    if (lab[can].getEstado() == 1) {
+                        botones[i][j].setBackground(Color.red);
+                        botones[i][j].setToolTipText("Equipo ocupado");
+                    }
+                    can++;
+                    jPanel2.add(botones[i][j]);
+                    botones[i][j].addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            ejecutarAlPresionarBoton(evt);
+                        }
+                    });
+                }
+            }
+            jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
+        }
     }
 
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
@@ -64,12 +97,49 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         if (boton.getBackground().equals(Color.green)) {
             boton.setBackground(Color.red);
             boton.setToolTipText("Equipo ocupado");
-            int x = JOptionPane.showConfirmDialog(rootPane, "Ingrese al laboratorio y ocupe el equipo número " + boton.getText()
+            int x = JOptionPane.showConfirmDialog(rootPane, "Ingrese al laboratorio y ocupe el equipo número " + boton.getText().split(": ")[0].split("-")[1]
                     + ",\n desea cerrar sesión en este equipo por seguridad.");
-            if (x == 0) {
-                new Login().setVisible(true);
-                dispose();
+
+            if (x == 2) {
+                boton.setBackground(Color.green);
+                boton.setToolTipText("Equipo disponible, clic para iniciar sesión");
+            } else {
+
+                String res1;
+                Equipos eqp = null;
+                try {
+
+                    eqp = fl.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + boton.getText().split(": ")[1]));
+                    res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
+                            eqp.getIdEquipo(), u.getIdUsuario());
+                } catch (Exception ex) {
+                    res1 = "false";
+                }
+                if (res1.equals("false")) {
+                    dispose();
+                    new Login().setVisible(true);
+                } else {
+                    String res = "false";
+                    try {
+                        res = fl.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
+                                eqp.getIdEquipo(), 1);
+                    } catch (Exception ex) {
+
+                    }
+                }
+                if (x == 0) {
+                    new Login().setVisible(true);
+                    dispose();
+                }else{
+                    Component c[]= jPanel2.getComponents();
+                    for (int i = 0; i < c.length; i++) {
+                        c[i].setEnabled(false);
+                    }
+                jButton2.setEnabled(false);
+                }
+
             }
+
         } else if (boton.getBackground().equals(Color.yellow)) {
             JOptionPane.showMessageDialog(rootPane, "El equipo no esta disponible");
         } else if (boton.getBackground().equals(Color.red)) {

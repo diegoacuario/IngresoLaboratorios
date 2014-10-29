@@ -15,7 +15,7 @@ import modelo.Usuarios;
  */
 public class MenuAdministrador extends javax.swing.JDialog {
 
-    private final Usuarios u;
+    public  Usuarios u;
 
     /**
      * Creates new form RegistraPersona

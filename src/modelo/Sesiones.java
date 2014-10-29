@@ -15,8 +15,8 @@ public class Sesiones {
 
     private Integer idSesion;
     private short bloqueada;
-    private Date fechaHoraInicio;
-    private Date fechaHoraFin;
+    private String fechaHoraInicio;
+    private String fechaHoraFin;
     private Equipos idEquipo;
     private Usuarios idUsuario;
 
@@ -36,21 +36,23 @@ public class Sesiones {
         this.bloqueada = bloqueada;
     }
 
-    public Date getFechaHoraInicio() {
+    public String getFechaHoraInicio() {
         return fechaHoraInicio;
     }
 
-    public void setFechaHoraInicio(Date fechaHoraInicio) {
+    public void setFechaHoraInicio(String fechaHoraInicio) {
         this.fechaHoraInicio = fechaHoraInicio;
     }
 
-    public Date getFechaHoraFin() {
+    public String getFechaHoraFin() {
         return fechaHoraFin;
     }
 
-    public void setFechaHoraFin(Date fechaHoraFin) {
+    public void setFechaHoraFin(String fechaHoraFin) {
         this.fechaHoraFin = fechaHoraFin;
     }
+
+    
 
     public Equipos getIdEquipo() {
         return idEquipo;

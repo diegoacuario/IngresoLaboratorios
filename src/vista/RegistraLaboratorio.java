@@ -5,6 +5,9 @@
  */
 package vista;
 
+import controlador.Funciones;
+import controlador.FuncionesLaboratorio;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
@@ -14,6 +17,7 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 public class RegistraLaboratorio extends javax.swing.JDialog {
 
     private final MenuAdministrador m;
+     private final FuncionesLaboratorio fl;
 
     /**
      * Creates new form RegistraPersona
@@ -24,6 +28,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         this.setUndecorated(true);//quita bordes a jframe
 
         initComponents();
+        fl = new FuncionesLaboratorio();
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
 
@@ -44,14 +49,14 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCod = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtNom = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDes = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -64,15 +69,15 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jTextField1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtCod.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtCod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtCodActionPerformed(evt);
             }
         });
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCod.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
+                txtCodKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -82,7 +87,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.1;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField1, gridBagConstraints);
+        jPanel1.add(txtCod, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -102,10 +107,10 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel3, gridBagConstraints);
 
-        jTextField3.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNom.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtNom.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField3KeyTyped(evt);
+                txtNomKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -115,7 +120,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 400;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jTextField3, gridBagConstraints);
+        jPanel1.add(txtNom, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jButton1.setText("Cancelar");
@@ -131,16 +136,21 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jButton2.setText("Guardar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 2;
         jPanel1.add(jButton2, gridBagConstraints);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDes.setColumns(20);
+        txtDes.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtDes.setRows(5);
+        jScrollPane1.setViewportView(txtDes);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -163,24 +173,43 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
        m.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtCodActionPerformed
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    private void txtCodKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodKeyTyped
         char c = evt.getKeyChar();
         if (c < '0' || c > '9') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField1KeyTyped
+    }//GEN-LAST:event_txtCodKeyTyped
 
-    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+    private void txtNomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomKeyTyped
         char c = evt.getKeyChar();
         c = (c + "").toLowerCase().charAt(0);
         if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
             evt.consume();
         }
-    }//GEN-LAST:event_jTextField3KeyTyped
+    }//GEN-LAST:event_txtNomKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String reg, men = "guardados", men1 = "guardar";
+        try {
+
+            reg = fl.registrarLaboratorio(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/registro/",
+                    txtCod.getText(), txtNom.getText(), txtDes.getText());
+        } catch (Exception ex) {
+            System.out.println(ex);
+            reg = "false";
+        }
+        if (reg.equals("true")) {
+            JOptionPane.showMessageDialog(rootPane, "Datos " + men + " correctamente");
+            dispose();
+            if (m != null) {
+                m.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -191,8 +220,8 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtCod;
+    private javax.swing.JTextArea txtDes;
+    private javax.swing.JTextField txtNom;
     // End of variables declaration//GEN-END:variables
 }
