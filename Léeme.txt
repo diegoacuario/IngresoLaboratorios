@@ -1,0 +1,1 @@
+Debe configurar la ip del servicio  web y del equipo que hara de servidor.

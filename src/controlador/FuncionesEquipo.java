@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import modelo.Equipos;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class FuncionesEquipo {
 

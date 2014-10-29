@@ -1,23 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vista;
 
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
-import controlador.FuncionesUsuario;
 import java.net.InetAddress;
-import javax.swing.JOptionPane;
 import modelo.Equipos;
 import modelo.Sesiones;
 import modelo.Usuarios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class Menu extends javax.swing.JFrame {
 
@@ -47,10 +40,10 @@ public class Menu extends javax.swing.JFrame {
         } else {
             String res1;
             idSolicitud = 0;
-            Equipos eqp =null;
+            Equipos eqp = null;
             try {
 
-               eqp = fe.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
+                eqp = fe.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
                 res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
                         eqp.getIdEquipo(), u.getIdUsuario());
             } catch (Exception ex) {

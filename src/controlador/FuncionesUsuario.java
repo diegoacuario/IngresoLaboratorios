@@ -16,8 +16,8 @@ import java.net.URL;
 import modelo.Usuarios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class FuncionesUsuario {
 
@@ -25,7 +25,6 @@ public class FuncionesUsuario {
             String correo, String celular, int rolUsuario) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
@@ -55,17 +54,13 @@ public class FuncionesUsuario {
             String correo, String celular, int rolUsuario) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
         String urlParameters = "cedula=" + cedula + "&idUsuario=" + idUsuario
-                + "&clave=" + clave
-                + "&nombres=" + nombres
-                + "&apellidos=" + apellidos
-                + "&correo=" + correo
-                + "&celular=" + celular
-                + "&rolUsuario=" + rolUsuario;
+                + "&clave=" + clave + "&nombres=" + nombres
+                + "&apellidos=" + apellidos + "&correo=" + correo
+                + "&celular=" + celular + "&rolUsuario=" + rolUsuario;
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
         wr.writeBytes(urlParameters);

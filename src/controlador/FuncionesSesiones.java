@@ -13,26 +13,21 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import modelo.Sesiones;
-import modelo.Usuarios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class FuncionesSesiones {
 
-    public String registrarSesion(String url,Integer idEquipo, Integer idUsuario) throws Exception {
+    public String registrarSesion(String url, Integer idEquipo, Integer idUsuario) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-        String urlParameters = "idEquipo=" + idEquipo
-                + "&idUsuario=" + idUsuario;
+        String urlParameters = "idEquipo=" + idEquipo + "&idUsuario=" + idUsuario;
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
         wr.writeBytes(urlParameters);
@@ -48,7 +43,6 @@ public class FuncionesSesiones {
         return response.toString();
     }
 
-
     public Sesiones obtieneDatosSesion(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<Sesiones>() {
@@ -56,7 +50,8 @@ public class FuncionesSesiones {
         Sesiones sesion = gson.fromJson(formatoJSON, tipoObjeto);
         return sesion;
     }
-    public String finSesion(String url,Integer idSesion) throws Exception {
+
+    public String finSesion(String url, Integer idSesion) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         //add reuqest header
@@ -78,10 +73,10 @@ public class FuncionesSesiones {
         in.close();
         return response.toString();
     }
-    public String buscarSesionesIniciadas(String url,String ip) throws Exception {
+
+    public String buscarSesionesIniciadas(String url, String ip) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
@@ -100,5 +95,4 @@ public class FuncionesSesiones {
         in.close();
         return response.toString();
     }
-   
 }

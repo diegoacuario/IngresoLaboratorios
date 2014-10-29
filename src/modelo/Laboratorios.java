@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class Laboratorios {
 
@@ -31,7 +26,6 @@ public class Laboratorios {
 
     public Laboratorios() {
     }
-    
 
     public int getIdLaboratorio() {
         return idLaboratorio;
@@ -64,7 +58,5 @@ public class Laboratorios {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    
 
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vista;
 
 import controlador.Funciones;
@@ -11,16 +6,19 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class RegistraLaboratorio extends javax.swing.JDialog {
 
     private final MenuAdministrador m;
-     private final FuncionesLaboratorio fl;
+    private final FuncionesLaboratorio fl;
 
     /**
-     * Creates new form RegistraPersona
+     * Creates new form RegistraLaboratorio
+     * @param parent
+     * @param modal
+     * @param m
      */
     public RegistraLaboratorio(java.awt.Frame parent, boolean modal, MenuAdministrador m) {
         super(parent, modal);
@@ -169,8 +167,8 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       setVisible(false);
-       m.setVisible(true);
+        setVisible(false);
+        m.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed

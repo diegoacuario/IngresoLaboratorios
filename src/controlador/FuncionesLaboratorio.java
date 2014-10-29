@@ -17,15 +17,14 @@ import java.util.ArrayList;
 import modelo.Laboratorios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class FuncionesLaboratorio {
 
-    public String registrarLaboratorio(String url,String cod, String nom, String des) throws Exception {
+    public String registrarLaboratorio(String url, String cod, String nom, String des) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        //add reuqest header
         con.setRequestMethod("POST");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");

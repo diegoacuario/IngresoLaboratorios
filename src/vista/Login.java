@@ -38,7 +38,7 @@ public class Login extends javax.swing.JFrame {
         }
         initComponents();
         if (!ip.equals(thisIp)) {
-            hilo = new Hilo(thisIp,this,null);
+            hilo = new Hilo(thisIp, this, null);
             hilo.start();
             btnRegistrar.setVisible(false);
         } else {
@@ -212,7 +212,7 @@ public class Login extends javax.swing.JFrame {
                     d.setVisible(true);
                     this.dispose();
                 } else {
-                    Menu m = new Menu(null, u,null);
+                    Menu m = new Menu(null, u, null);
                     m.setVisible(true);
                     this.dispose();
                 }
@@ -250,7 +250,7 @@ public class Login extends javax.swing.JFrame {
                         d.setVisible(true);
                         this.dispose();
                     } else {
-                        Menu m = new Menu(null, u,null);
+                        Menu m = new Menu(null, u, null);
                         m.setVisible(true);
                         this.dispose();
                     }
@@ -280,7 +280,7 @@ public class Login extends javax.swing.JFrame {
                         d.setVisible(true);
                         this.dispose();
                     } else {
-                        Menu m = new Menu(null, u,null);
+                        Menu m = new Menu(null, u, null);
                         m.setVisible(true);
                         this.dispose();
                     }

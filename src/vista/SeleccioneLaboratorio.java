@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import modelo.Laboratorios;
 import modelo.Usuarios;
 
@@ -19,11 +18,11 @@ public class SeleccioneLaboratorio extends javax.swing.JFrame {
 
     private Laboratorios l;
     private final Usuarios u;
-    private Funciones f;
-    private FuncionesLaboratorio fl;
+    private final Funciones f;
+    private final FuncionesLaboratorio fl;
 
     /**
-     * Creates new form jFrameGUI
+     * Creates new form SeleccioneLaboratorio
      *
      * @param u
      */

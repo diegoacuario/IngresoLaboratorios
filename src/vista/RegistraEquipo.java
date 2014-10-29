@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vista;
 
 import controlador.Funciones;
@@ -14,8 +9,8 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import modelo.Laboratorios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class RegistraEquipo extends javax.swing.JDialog {
 
@@ -42,7 +37,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
         Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(fe.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
         String nomLab[] = new String[lab.length];
         for (int i = 0; i < nomLab.length; i++) {
-            nomLab[i] = lab[i].getIdLaboratorio()+": "+lab[i].getNombre();
+            nomLab[i] = lab[i].getIdLaboratorio() + ": " + lab[i].getNombre();
         }
         jcbLaboratorios.setModel(new DefaultComboBoxModel(nomLab));
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
@@ -229,7 +224,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
         try {
 
             reg = fEqp.registrarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/registro/",
-                    txtiP.getText(), txtMac.getText(), Integer.parseInt(txtNumero.getText()),Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]));
+                    txtiP.getText(), txtMac.getText(), Integer.parseInt(txtNumero.getText()), Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]));
         } catch (Exception ex) {
             System.out.println(ex);
             reg = "false";

@@ -85,7 +85,6 @@ public class TextFieldPersonal extends JTextField implements ComponentListener {
     }
 
     //------------
-
     public boolean isxDarkIcon() {
         return xBlackIcon;
     }
@@ -113,7 +112,6 @@ public class TextFieldPersonal extends JTextField implements ComponentListener {
     }
 
     //------------
-
     /**
      * Actualiza las propiedades del borde del TextField
      */

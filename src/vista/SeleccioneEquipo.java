@@ -2,16 +2,12 @@ package vista;
 
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
-import controlador.FuncionesLaboratorio;
 import controlador.FuncionesSesiones;
 import modelo.Bloquea;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import modelo.Equipos;
@@ -25,12 +21,12 @@ import modelo.Usuarios;
 public class SeleccioneEquipo extends javax.swing.JFrame {
 
     private final Usuarios u;
-    private Funciones f;
-    private FuncionesEquipo fl;
-    private FuncionesSesiones fs;
+    private final Funciones f;
+    private final FuncionesEquipo fl;
+    private final FuncionesSesiones fs;
 
     /**
-     * Creates new form jFrameGUI
+     * Creates new form SeleccioneEquipo
      *
      * @param l
      * @param u
@@ -130,12 +126,12 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 if (x == 0) {
                     new Login().setVisible(true);
                     dispose();
-                }else{
-                    Component c[]= jPanel2.getComponents();
+                } else {
+                    Component c[] = jPanel2.getComponents();
                     for (int i = 0; i < c.length; i++) {
                         c[i].setEnabled(false);
                     }
-                jButton2.setEnabled(false);
+                    jButton2.setEnabled(false);
                 }
 
             }

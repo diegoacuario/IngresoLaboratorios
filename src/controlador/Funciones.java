@@ -21,11 +21,10 @@ import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import modelo.Sesiones;
-import modelo.Usuarios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class Funciones {
 
@@ -47,7 +46,7 @@ public class Funciones {
         return prop;
     }
 
-    public  ArrayList<Sesiones> obtieneSesiones(String formatoJSON) {
+    public ArrayList<Sesiones> obtieneSesiones(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<List<Sesiones>>() {
         }.getType();
@@ -55,7 +54,7 @@ public class Funciones {
         return sesiones;
     }
 
-    public  String obtieneJson(String url) {
+    public String obtieneJson(String url) {
         String json = "", lin;
         try {
             URL pagina = new URL(url);
@@ -68,7 +67,8 @@ public class Funciones {
         }
         return json;
     }
-    public  String obtieneTexto(String url) {
+
+    public String obtieneTexto(String url) {
         String json = "", lin;
         try {
             URL pagina = new URL(url);
@@ -81,6 +81,5 @@ public class Funciones {
         }
         return json;
     }
-    
 
 }

@@ -6,17 +6,13 @@
 package controlador;
 
 import java.net.InetAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import modelo.Sesiones;
 import vista.Login;
 import vista.Menu;
-import vista.MenuEstudiante;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class Hilo extends Thread {
 
@@ -38,14 +34,13 @@ public class Hilo extends Thread {
             try {
                 try {
                     String json = fs.buscarSesionesIniciadas(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/buscarSesionesIniciadas/", InetAddress.getLocalHost().getHostAddress());
-                  
                     s = fs.obtieneDatosSesion(json);
                 } catch (Exception ex) {
                     System.out.println(ex);
                 }
                 if (s != null) {
                     l.dispose();
-                    Menu m = new Menu(null, s.getIdUsuario(),s);
+                    Menu m = new Menu(null, s.getIdUsuario(), s);
                     m.setVisible(true);
                 }
                 sleep(3000);
