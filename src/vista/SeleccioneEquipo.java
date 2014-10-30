@@ -3,12 +3,15 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
+import java.awt.BorderLayout;
 import modelo.Bloquea;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javafx.scene.layout.Border;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import modelo.Equipos;
 import modelo.Laboratorios;
@@ -63,6 +66,10 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
             for (int j = 0; j < col; j++) {
                 if (j < col - 1 || (j == col - 1 && i < res)) {
                     botones[i][j] = new JButton();
+                    JLabel jlAux = new JLabel("<html><font size=6 color='blue'><b>"+equipos[can].getIp()+"</b></font></html>");
+                    jlAux.setHorizontalAlignment(0);
+                    botones[i][j].setLayout(new BorderLayout());
+                    botones[i][j].add(jlAux,java.awt.BorderLayout.SOUTH);
                     botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
                     botones[i][j].setText("Eqp-" + equipos[can].getNumero());
                     botones[i][j].setSize(200, 300);

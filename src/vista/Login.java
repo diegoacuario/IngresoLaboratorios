@@ -124,8 +124,10 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipady = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(40, 40, 5, 5);
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(13, 15, 10, 3);
         jPanel2.add(jLabel1, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
@@ -133,8 +135,10 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipady = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 40, 5, 5);
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(13, 15, 10, 3);
         jPanel2.add(jLabel2, gridBagConstraints);
 
         user.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
@@ -148,12 +152,10 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.ipadx = 13;
-        gridBagConstraints.ipady = 30;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weighty = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(40, 0, 5, 0);
+        gridBagConstraints.weighty = 0.8;
+        gridBagConstraints.insets = new java.awt.Insets(13, 0, 10, 22);
         jPanel2.add(user, gridBagConstraints);
 
         btnSalir.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
@@ -207,10 +209,11 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 57;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weighty = 0.3;
+        gridBagConstraints.insets = new java.awt.Insets(13, 0, 10, 22);
         jPanel2.add(pass, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
