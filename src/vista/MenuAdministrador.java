@@ -102,7 +102,7 @@ public class MenuAdministrador extends javax.swing.JDialog {
         jPanel1.add(btnEqp, gridBagConstraints);
 
         jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        jButton2.setText("Configuraciones del sistema");
+        jButton2.setText("Reporte de sesiones");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

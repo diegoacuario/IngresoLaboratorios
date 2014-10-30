@@ -20,7 +20,7 @@ public class ClaveUsuario extends javax.swing.JDialog {
         super(parent, modal);
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
-        txtClave.setText("admin");
+        //txtClave.setText("admin");
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setAlwaysOnTop(true);//siempre al frente       
     }

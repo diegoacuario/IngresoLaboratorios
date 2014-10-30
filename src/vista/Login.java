@@ -6,6 +6,7 @@ import controlador.Hilo;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
+import javax.swing.JButton;
 import modelo.Bloquea;
 import javax.swing.JOptionPane;
 import modelo.Usuarios;
@@ -20,7 +21,11 @@ public class Login extends javax.swing.JFrame {
     private final String ip;
     private Usuarios u;
     private String thisIp = null;
+    private String rest = null;
+    private String restIp = null;
     private Hilo hilo = null;
+
+    boolean isConected = false;
 
     /**
      * Creates new form jFrameBlocked
@@ -28,6 +33,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         fileConfig = Funciones.getFileProperties("classes/confi.properties");
         this.ip = fileConfig.getProperty("ip_servidor");
+        this.rest = fileConfig.getProperty("servicio_web");
 
         this.setUndecorated(true);//quita bordes a jframe
 
@@ -37,18 +43,49 @@ public class Login extends javax.swing.JFrame {
 
         }
         initComponents();
-        if (!ip.equals(thisIp)) {
-            hilo = new Hilo(thisIp, this, null);
-            hilo.start();
-            btnRegistrar.setVisible(false);
-        } else {
+        conectar();
 
-        }
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
         this.setExtendedState(MAXIMIZED_BOTH);//maximizado
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
+
+    }
+
+    public JButton getBtnEntrar() {
+        return btnEntrar;
+    }
+
+    public void setBtnEntrar(JButton btnEntrar) {
+        this.btnEntrar = btnEntrar;
+    }
+
+    public JButton getBtnRegistrar() {
+        return btnRegistrar;
+    }
+
+    public void setBtnRegistrar(JButton btnRegistrar) {
+        this.btnRegistrar = btnRegistrar;
+    }
+
+    public void conectar() {
+        int port;
+        try {
+            port = Integer.parseInt(rest.split("/")[2].split(":")[1]);
+        } catch (Exception e) {
+            port = 80;
+        }
+        
+            restIp = rest.split("/")[2].split(":")[0];
+       // if (!ip.equals(thisIp)) {
+            hilo = new Hilo(thisIp, this, null, restIp, port);
+            hilo.start();
+             if (!ip.equals(thisIp)) {
+            btnRegistrar.setVisible(false);
+//        } else {
+//
+        }
 
     }
 
@@ -101,14 +138,10 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(jLabel2, gridBagConstraints);
 
         user.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        user.setText("1105581316");
         user.setPreferredSize(new java.awt.Dimension(200, 32));
         user.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 userKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                userKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -166,7 +199,6 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(btnRegistrar, gridBagConstraints);
 
         pass.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        pass.setText("admin");
         pass.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 passKeyTyped(evt);
@@ -175,8 +207,7 @@ public class Login extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 57;
         gridBagConstraints.ipady = 12;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -228,10 +259,6 @@ public class Login extends javax.swing.JFrame {
         new RegistraUsuario(this, rootPaneCheckingEnabled, null, u).setVisible(true);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
-    private void userKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyTyped
-
-    }//GEN-LAST:event_userKeyTyped
-
     private void passKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passKeyTyped
         int c = evt.getKeyChar();
         if (user.getText().length() == 10 && c == 10) {
@@ -264,7 +291,7 @@ public class Login extends javax.swing.JFrame {
     private void userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyReleased
         char c = evt.getKeyChar();
 
-        if (user.getText().length() == 10 && !pass.getText().isEmpty()) {
+        if (user.getText().length() == 10 &&  c == 10) {
             Funciones f = new Funciones();
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();

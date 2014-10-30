@@ -10,12 +10,13 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
  * @author diegoacuario
  */
 public class RegistraLaboratorio extends javax.swing.JDialog {
-
+    
     private final MenuAdministrador m;
     private final FuncionesLaboratorio fl;
 
     /**
      * Creates new form RegistraLaboratorio
+     *
      * @param parent
      * @param modal
      * @param m
@@ -27,7 +28,6 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
 
         initComponents();
         fl = new FuncionesLaboratorio();
-
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
 
         this.setAlwaysOnTop(true);//siempre al frente       
@@ -51,10 +51,10 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNom = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDes = new javax.swing.JTextArea();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -120,18 +120,6 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(txtNom, gridBagConstraints);
 
-        jButton1.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        jButton1.setText("Cancelar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        jPanel1.add(jButton1, gridBagConstraints);
-
         jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jButton2.setText("Guardar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -160,26 +148,30 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.weighty = 0.6;
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
+        jButton3.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jButton3.setText("Cancelar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jButton3, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         setSize(new java.awt.Dimension(872, 465));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setVisible(false);
-        m.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
-        // TODO add your handling code here:
+        jButton2.setText("Actualizar");
     }//GEN-LAST:event_txtCodActionPerformed
 
     private void txtCodKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodKeyTyped
-        char c = evt.getKeyChar();
-        if (c < '0' || c > '9') {
-            evt.consume();
-        }
+        
     }//GEN-LAST:event_txtCodKeyTyped
 
     private void txtNomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomKeyTyped
@@ -193,7 +185,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String reg, men = "guardados", men1 = "guardar";
         try {
-
+            
             reg = fl.registrarLaboratorio(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/registro/",
                     txtCod.getText(), txtNom.getText(), txtDes.getText());
         } catch (Exception ex) {
@@ -209,10 +201,16 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       dispose();
+        if (m != null) {
+            m.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

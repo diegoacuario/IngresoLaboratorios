@@ -66,6 +66,8 @@ public class RegistraEquipo extends javax.swing.JDialog {
         txtNumero = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jcbLaboratorios = new javax.swing.JComboBox();
+        jcbLaboratorios1 = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -109,10 +111,10 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
         jLabel3.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Laboratorio: ");
+        jLabel3.setText("Estado: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel3, gridBagConstraints);
 
@@ -181,12 +183,31 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jPanel1.add(jLabel4, gridBagConstraints);
 
         jcbLaboratorios.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jcbLaboratorios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbLaboratorios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "lab1", "lab2" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(jcbLaboratorios, gridBagConstraints);
+
+        jcbLaboratorios1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        jcbLaboratorios1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "No disponible" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
+        jPanel1.add(jcbLaboratorios1, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Laboratorio: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        jPanel1.add(jLabel5, gridBagConstraints);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -200,7 +221,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtiPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtiPActionPerformed
-        // TODO add your handling code here:
+        jButton2.setText("Actualizar");
     }//GEN-LAST:event_txtiPActionPerformed
 
     private void txtiPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtiPKeyTyped
@@ -250,8 +271,10 @@ public class RegistraEquipo extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox jcbLaboratorios;
+    private javax.swing.JComboBox jcbLaboratorios1;
     private javax.swing.JTextField txtMac;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtiP;
