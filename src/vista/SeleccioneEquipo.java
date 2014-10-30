@@ -24,6 +24,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
     private final Funciones f;
     private final FuncionesEquipo fl;
     private final FuncionesSesiones fs;
+    private Equipos equipos[];
 
     /**
      * Creates new form SeleccioneEquipo
@@ -48,14 +49,14 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
         int idLaboratorio = l.getIdLaboratorio();
-        Equipos lab[] = fl.arrayToMatriz(fl.obtieneDatosEquipos(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/idLaboratorio=" + idLaboratorio)));
+        equipos = fl.arrayToMatriz(fl.obtieneDatosEquipos(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/idLaboratorio=" + idLaboratorio)));
         int filas = 4;
         int colExtra = 1;
-        if (lab.length % 4 == 0) {
+        if (equipos.length % 4 == 0) {
             colExtra = 0;
         }
-        int col = (int) (lab.length / 4.0f) + colExtra;
-        int res = 4 - (filas * col) + lab.length;
+        int col = (int) (equipos.length / 4.0f) + colExtra;
+        int res = 4 - (filas * col) + equipos.length;
         int can = 0;
         JButton botones[][] = new JButton[filas][col];
         for (int i = 0; i < filas; i++) {
@@ -63,15 +64,15 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 if (j < col - 1 || (j == col - 1 && i < res)) {
                     botones[i][j] = new JButton();
                     botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-                    botones[i][j].setText("Eqp-" + lab[can].getNumero() + ": " + lab[can].getIp());
+                    botones[i][j].setText("Eqp-" + equipos[can].getNumero());
                     botones[i][j].setSize(200, 300);
                     botones[i][j].setBackground(Color.green);
                     botones[i][j].setToolTipText("Equipo disponible, clic para iniciar sesión");
-                    if (lab[can].getEstado() == 3) {
+                    if (equipos[can].getEstado() == 3) {
                         botones[i][j].setBackground(Color.yellow);
                         botones[i][j].setToolTipText("Equipo no disponible");
                     }
-                    if (lab[can].getEstado() == 1) {
+                    if (equipos[can].getEstado() == 1) {
                         botones[i][j].setBackground(Color.red);
                         botones[i][j].setToolTipText("Equipo ocupado");
                     }
@@ -104,8 +105,14 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 String res1;
                 Equipos eqp = null;
                 try {
+                    int numEqp = Integer.parseInt(boton.getText().split(": ")[0].split("-")[1]);
+                    for (Equipos equipo : equipos) {
+                        if (numEqp == equipo.getIdEquipo()) {
+                            eqp = equipo;
+                        }
+                    }
 
-                    eqp = fl.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + boton.getText().split(": ")[1]));
+                    // eqp = fl.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + boton.getText().split(": ")[1]));
                     res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
                             eqp.getIdEquipo(), u.getIdUsuario());
                 } catch (Exception ex) {
