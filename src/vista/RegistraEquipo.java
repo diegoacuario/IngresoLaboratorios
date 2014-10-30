@@ -192,7 +192,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jPanel1.add(jcbLaboratorios, gridBagConstraints);
 
         jcbLaboratorios1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jcbLaboratorios1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "No disponible" }));
+        jcbLaboratorios1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "No disponible", "Ocupado" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
