@@ -3,6 +3,7 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesUsuario;
 import controlador.Hilo;
+import java.awt.Component;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Properties;
@@ -24,13 +25,15 @@ public class Login extends javax.swing.JFrame {
     private String rest = null;
     private String restIp = null;
     private Hilo hilo = null;
-
+    private int x = 0;
     boolean isConected = false;
+    private Funciones f;
 
     /**
      * Creates new form jFrameBlocked
      */
     public Login() {
+        f = new Funciones();
         fileConfig = Funciones.getFileProperties("classes/confi.properties");
         this.ip = fileConfig.getProperty("ip_servidor");
         this.rest = fileConfig.getProperty("servicio_web");
@@ -76,12 +79,12 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception e) {
             port = 80;
         }
-        
-            restIp = rest.split("/")[2].split(":")[0];
-       // if (!ip.equals(thisIp)) {
-            hilo = new Hilo(thisIp, this, null, restIp, port);
-            hilo.start();
-             if (!ip.equals(thisIp)) {
+
+        restIp = rest.split("/")[2].split(":")[0];
+        // if (!ip.equals(thisIp)) {
+        hilo = new Hilo(thisIp, this, null, restIp, port);
+        hilo.start();
+        if (!ip.equals(thisIp)) {
             btnRegistrar.setVisible(false);
 //        } else {
 //
@@ -143,9 +146,20 @@ public class Login extends javax.swing.JFrame {
 
         user.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         user.setPreferredSize(new java.awt.Dimension(200, 32));
+        user.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                userFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                userFocusLost(evt);
+            }
+        });
         user.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 userKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                userKeyTyped(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -231,31 +245,33 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        Funciones f = new Funciones();
-        FuncionesUsuario fu = new FuncionesUsuario();
-        String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
-        u = fu.obtieneDatosUsuario(f.obtieneJson(url));
-        if (u != null) {
-            if (u.getRolUsuario() == 1) {
-                dispose();
-                MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
-                m.setVisible(true);
-            } else {
-                if (ip.equals(thisIp)) {
-                    SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
-                    d.setVisible(true);
-                    this.dispose();
-                } else {
-                    Menu m = new Menu(null, u, null);
+        if (user.getText().length() == 10 && !pass.getText().isEmpty()) {
+            Funciones f = new Funciones();
+            FuncionesUsuario fu = new FuncionesUsuario();
+            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
+            u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+            if (u != null) {
+                if (u.getRolUsuario() == 1) {
+                    dispose();
+                    MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
                     m.setVisible(true);
-                    this.dispose();
+                } else {
+                    if (ip.equals(thisIp)) {
+                        SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                        d.setVisible(true);
+                        this.dispose();
+                    } else {
+                        Menu m = new Menu(null, u, null);
+                        m.setVisible(true);
+                        this.dispose();
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
         }
-
-
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -264,7 +280,7 @@ public class Login extends javax.swing.JFrame {
 
     private void passKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passKeyTyped
         int c = evt.getKeyChar();
-        if (user.getText().length() == 10 && c == 10) {
+        if (user.getText().length() == 10 && c == 10 && !pass.getText().isEmpty()) {
             Funciones f = new Funciones();
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
@@ -292,9 +308,16 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_passKeyTyped
 
     private void userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyReleased
+        if (user.getText().length() == 9) {
+            user.setText(f.completaDecimoDig(user.getText()));
+            ((Component) evt.getSource()).transferFocus();
+        }
         char c = evt.getKeyChar();
 
-        if (user.getText().length() == 10 &&  c == 10) {
+        if (user.getText().length() == 10 && c == 10 && !pass.getText().isEmpty()) {
+            if (x == 2) {
+                x = 0;
+            }
             Funciones f = new Funciones();
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + user.getText() + ",clave=" + pass.getText();
@@ -316,13 +339,35 @@ public class Login extends javax.swing.JFrame {
                     }
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                if (x == 1) {
+                    x = 2;
+                }
+                if (c == 10 && x == 0) {
+                    JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                    x = 1;
+                }
+
+                System.out.println(x);
+
             }
         }
-        if (c < '0' || c > '9') {
+    }//GEN-LAST:event_userKeyReleased
+
+    private void userKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userKeyTyped
+        char c = evt.getKeyChar();
+        if (((c < '0' || c > '9')) || user.getText().length() >= 10) {
             evt.consume();
         }
-    }//GEN-LAST:event_userKeyReleased
+
+    }//GEN-LAST:event_userKeyTyped
+
+    private void userFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusLost
+
+    }//GEN-LAST:event_userFocusLost
+
+    private void userFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_userFocusGained
+
+    }//GEN-LAST:event_userFocusGained
 
     /**
      * @param args the command line arguments

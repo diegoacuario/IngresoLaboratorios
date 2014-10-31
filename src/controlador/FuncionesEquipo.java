@@ -22,7 +22,7 @@ import modelo.Equipos;
  */
 public class FuncionesEquipo {
 
-     public String registrarEquipo(String url, String ip, String mac, Integer numero,Integer idLab) throws Exception {
+    public String registrarEquipo(String url, String ip, String mac, Integer numero, Integer idLab, Integer estado) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         //add reuqest header
@@ -32,7 +32,8 @@ public class FuncionesEquipo {
         String urlParameters = "ip=" + ip
                 + "&mac=" + mac
                 + "&numero=" + numero
-                + "&idLab=" + idLab;
+                + "&idLab=" + idLab
+                + "&estado=" + estado;
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
         wr.writeBytes(urlParameters);
@@ -47,7 +48,8 @@ public class FuncionesEquipo {
         in.close();
         return response.toString();
     }
-     public String editarEquipo(String url, Integer idEquipo,int estado) throws Exception {
+
+    public String editarEquipo(String url, Integer idEquipo, int estado) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         //add reuqest header
@@ -70,6 +72,7 @@ public class FuncionesEquipo {
         in.close();
         return response.toString();
     }
+
     public ArrayList<Equipos> obtieneDatosEquipos(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<ArrayList<Equipos>>() {
@@ -77,6 +80,7 @@ public class FuncionesEquipo {
         ArrayList<Equipos> lab = gson.fromJson(formatoJSON, tipoObjeto);
         return lab;
     }
+
     public Equipos obtieneDatosEquipo(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<Equipos>() {
@@ -91,5 +95,34 @@ public class FuncionesEquipo {
             eqp[i] = eqps.get(i);
         }
         return eqp;
+    }
+
+    public String editarEquipoDatos(String url, Integer idEquipo, Integer estado,
+            String mac, String ip, Integer idLaboratorio, Integer numero) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        String urlParameters = "idEquipo=" + idEquipo
+                + "&estado=" + estado
+                + "&mac=" + mac
+                + "&ip=" + ip
+                + "&idLaboratorio=" + idLaboratorio
+                + "&numero=" + numero;
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
     }
 }

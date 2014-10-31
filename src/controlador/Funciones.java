@@ -13,12 +13,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import modelo.Sesiones;
 
@@ -80,6 +84,84 @@ public class Funciones {
         } catch (IOException ex) {
         }
         return json;
+    }
+
+    public boolean ping(String ip) {
+        boolean ping = false;
+        String pingCmd = "ping " + ip + " -t";
+        try {
+            Runtime r = Runtime.getRuntime();
+            Process p = r.exec(pingCmd);
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    System.out.println(inputLine);
+                    if (inputLine.contains("Host de destino inaccesible")
+                            || inputLine.contains("Tiempo de espera agotado")
+                            || inputLine.contains("Red de destino inaccesible")
+                            || inputLine.contains("Error general")) {
+                        return false;
+                    }
+                    if (inputLine.contains("tiempo=") || inputLine.contains("tiempo<1m")) {
+                        return true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            ping = false;
+        }
+        return ping;
+    }
+
+    public boolean pingOtro(String ip, Integer tiempo) {
+        boolean ping = false;
+        try {
+            InetAddress inet = InetAddress.getByName(ip);
+            try {
+                if (inet.isReachable(tiempo)) {
+                    ping = true;
+                } else {
+                    ping = false;
+                }
+            } catch (IOException ex) {
+                ping = false;
+            }
+        } catch (UnknownHostException ex) {
+            ping = false;
+        }
+        return ping;
+    }
+
+    public String completaDecimoDig(String cedula) {
+
+        String res = "0";
+
+        int[] coefValCedula = {2, 1, 2, 1, 2, 1, 2, 1, 2};
+        int suma = 0;
+        int digito = 0;
+        for (int i = 0; i < cedula.length(); i++) {
+            digito = Integer.parseInt(cedula.substring(i, i + 1)) * coefValCedula[i];
+            suma += ((digito % 10) + (digito / 10));
+        }
+        if ((suma % 10) != 0) {
+            res = (10 - (suma % 10)) + "";
+        }
+
+        return cedula + res;
+    }
+
+    public  boolean validateEmail(String email) {
+        try {
+            String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            // Compiles the given regular expression into a pattern.
+            Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+            // Match the given input against this pattern
+            Matcher matcher = pattern.matcher(email);
+            return matcher.matches();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

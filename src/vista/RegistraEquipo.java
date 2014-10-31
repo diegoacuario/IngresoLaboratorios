@@ -6,6 +6,7 @@ import controlador.FuncionesLaboratorio;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import modelo.Equipos;
 import modelo.Laboratorios;
 
 /**
@@ -18,6 +19,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
     private final Funciones fe;
     private final FuncionesEquipo fEqp;
     private final FuncionesLaboratorio fl;
+    private Equipos eqp;
 
     /**
      * Creates new form RegistraPersona
@@ -62,11 +64,11 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         txtMac = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         txtNumero = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jcbLaboratorios = new javax.swing.JComboBox();
-        jcbLaboratorios1 = new javax.swing.JComboBox();
+        jcbEstado = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -87,6 +89,9 @@ public class RegistraEquipo extends javax.swing.JDialog {
             }
         });
         txtiP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtiPKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtiPKeyTyped(evt);
             }
@@ -120,6 +125,9 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
         txtMac.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         txtMac.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMacKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtMacKeyTyped(evt);
             }
@@ -146,18 +154,18 @@ public class RegistraEquipo extends javax.swing.JDialog {
         gridBagConstraints.ipadx = 2;
         jPanel1.add(jButton1, gridBagConstraints);
 
-        jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        jButton2.setText("Guardar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 2;
-        jPanel1.add(jButton2, gridBagConstraints);
+        jPanel1.add(btnGuardar, gridBagConstraints);
 
         txtNumero.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -191,14 +199,16 @@ public class RegistraEquipo extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(jcbLaboratorios, gridBagConstraints);
 
-        jcbLaboratorios1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jcbLaboratorios1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "No disponible", "Ocupado" }));
+        jcbEstado.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        jcbEstado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Disponible", "Ocupado", "No disponible" }));
+        jcbEstado.setSelectedIndex(2);
+        jcbEstado.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
-        jPanel1.add(jcbLaboratorios1, gridBagConstraints);
+        jPanel1.add(jcbEstado, gridBagConstraints);
 
         jLabel5.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -221,7 +231,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtiPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtiPActionPerformed
-        jButton2.setText("Actualizar");
+
     }//GEN-LAST:event_txtiPActionPerformed
 
     private void txtiPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtiPKeyTyped
@@ -240,14 +250,34 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
     }//GEN-LAST:event_txtMacKeyTyped
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String reg, men = "guardados", men1 = "guardar";
         try {
+            if (btnGuardar.getText().equals("Guardar")) {
+                int estado = jcbEstado.getSelectedIndex();
+                reg = fEqp.registrarEquipo(
+                        Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/registro/",
+                        txtiP.getText(),
+                        txtMac.getText(),
+                        Integer.parseInt(txtNumero.getText()),
+                        Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]),
+                        estado
+                );
 
-            reg = fEqp.registrarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/registro/",
-                    txtiP.getText(), txtMac.getText(), Integer.parseInt(txtNumero.getText()), Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]));
+            } else {
+                men = "actualizados";
+                men1 = "actualizar";
+                reg = fEqp.editarEquipoDatos(
+                        Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarDatos/",
+                        eqp.getIdEquipo(),
+                        jcbEstado.getSelectedIndex(),
+                        txtMac.getText(),
+                        txtiP.getText(),
+                        Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]),
+                        Integer.parseInt(txtNumero.getText()));
+            }
+
         } catch (Exception ex) {
-            System.out.println(ex);
             reg = "false";
         }
         if (reg.equals("true")) {
@@ -256,25 +286,59 @@ public class RegistraEquipo extends javax.swing.JDialog {
             if (m != null) {
                 m.setVisible(true);
             }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumeroKeyTyped
 
+    private void txtiPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtiPKeyReleased
+        char c = evt.getKeyChar();
+        String ip = txtiP.getText();
+        if (c == 10) {
+            boolean ping = fe.ping(ip);
+            if (ping) {
+                jcbEstado.setSelectedIndex(0);
+            } else {
+                jcbEstado.setSelectedIndex(2);
+            }
+            eqp = fEqp.obtieneDatosEquipo(fe.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+            if (eqp != null) {
+                btnGuardar.setText("Actualizar");
+                jcbEstado.setSelectedIndex(eqp.getEstado());
+                jcbLaboratorios.setSelectedItem(eqp.getIdLaboratorio().getIdLaboratorio() + ": " + eqp.getIdLaboratorio().getNombre() + "");
+                txtMac.setText(eqp.getMac());
+                txtNumero.setText(eqp.getNumero() + "");
+            } else {
+                btnGuardar.setText("Guardar");
+                txtMac.setText("");
+                txtNumero.setText("");
+                jcbLaboratorios.setSelectedIndex(0);
+            }
+
+        }
+    }//GEN-LAST:event_txtiPKeyReleased
+
+    private void txtMacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMacKeyReleased
+        String val = txtMac.getText();
+        txtMac.setText(val.toUpperCase());   
+    }//GEN-LAST:event_txtMacKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox jcbEstado;
     private javax.swing.JComboBox jcbLaboratorios;
-    private javax.swing.JComboBox jcbLaboratorios1;
     private javax.swing.JTextField txtMac;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtiP;

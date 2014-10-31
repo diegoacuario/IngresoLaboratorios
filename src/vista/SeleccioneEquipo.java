@@ -66,16 +66,16 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
             for (int j = 0; j < col; j++) {
                 if (j < col - 1 || (j == col - 1 && i < res)) {
                     botones[i][j] = new JButton();
-                    JLabel jlAux = new JLabel("<html><font size=6 color='blue'><b>"+equipos[can].getIp()+"</b></font></html>");
+                    JLabel jlAux = new JLabel("<html><font size=6 color='blue'><b>" + equipos[can].getIp() + "</b></font></html>");
                     jlAux.setHorizontalAlignment(0);
                     botones[i][j].setLayout(new BorderLayout());
-                    botones[i][j].add(jlAux,java.awt.BorderLayout.SOUTH);
+                    botones[i][j].add(jlAux, java.awt.BorderLayout.SOUTH);
                     botones[i][j].setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
                     botones[i][j].setText("Eqp-" + equipos[can].getNumero());
                     botones[i][j].setSize(200, 300);
                     botones[i][j].setBackground(Color.green);
                     botones[i][j].setToolTipText("Equipo disponible, clic para iniciar sesión");
-                    if (equipos[can].getEstado() == 3) {
+                    if (equipos[can].getEstado() == 2) {
                         botones[i][j].setBackground(Color.yellow);
                         botones[i][j].setToolTipText("Equipo no disponible");
                     }
@@ -108,7 +108,6 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 boton.setBackground(Color.green);
                 boton.setToolTipText("Equipo disponible, clic para iniciar sesión");
             } else {
-
                 String res1;
                 Equipos eqp = null;
                 try {
@@ -118,8 +117,6 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                             eqp = equipo;
                         }
                     }
-
-                    // eqp = fl.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + boton.getText().split(": ")[1]));
                     res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
                             eqp.getIdEquipo(), u.getIdUsuario());
                 } catch (Exception ex) {
@@ -131,6 +128,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 } else {
                     String res = "false";
                     try {
+                        //poner el equipo como ocupado
                         res = fl.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
                                 eqp.getIdEquipo(), 1);
                     } catch (Exception ex) {

@@ -55,6 +55,7 @@ public class Menu extends javax.swing.JFrame {
             } else {
                 String res = "false";
                 try {
+                    //Poner equipo como ocupado
                     res = fe.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
                             eqp.getIdEquipo(), 1);
                 } catch (Exception ex) {
