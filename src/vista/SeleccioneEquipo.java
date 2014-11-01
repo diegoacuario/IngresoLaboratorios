@@ -3,13 +3,13 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
+import controlador.HiloPing;
 import java.awt.BorderLayout;
 import modelo.Bloquea;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javafx.scene.layout.Border;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,6 +29,24 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
     private final FuncionesSesiones fs;
     private Equipos equipos[];
 
+    public Equipos[] getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(Equipos[] equipos) {
+        this.equipos = equipos;
+    }
+    private JButton botones[][];
+    HiloPing h;
+
+    public JButton[][] getBotones() {
+        return botones;
+    }
+
+    public void setBotones(JButton[][] botones) {
+        this.botones = botones;
+    }
+
     /**
      * Creates new form SeleccioneEquipo
      *
@@ -38,7 +56,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
     public SeleccioneEquipo(Laboratorios l, Usuarios u) {
         this.u = u;
         this.setUndecorated(true);//quita bordes a jframe
-
+        
         initComponents();
         f = new Funciones();
         fl = new FuncionesEquipo();
@@ -61,12 +79,12 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         int col = (int) (equipos.length / 4.0f) + colExtra;
         int res = 4 - (filas * col) + equipos.length;
         int can = 0;
-        JButton botones[][] = new JButton[filas][col];
+        botones = new JButton[filas][col];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < col; j++) {
                 if (j < col - 1 || (j == col - 1 && i < res)) {
                     botones[i][j] = new JButton();
-                    JLabel jlAux = new JLabel("<html><font size=6 color='blue'><b>" + equipos[can].getIp() + "</b></font></html>");
+                    JLabel jlAux = new JLabel("<html><font size=6 color='blue'><b> " + equipos[can].getIp() + " </b></font></html>");
                     jlAux.setHorizontalAlignment(0);
                     botones[i][j].setLayout(new BorderLayout());
                     botones[i][j].add(jlAux, java.awt.BorderLayout.SOUTH);
@@ -94,6 +112,8 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
             }
             jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
         }
+        h = new HiloPing(this);
+        h.start();
     }
 
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {

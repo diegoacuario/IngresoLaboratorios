@@ -20,7 +20,7 @@ public class SeleccioneLaboratorio extends javax.swing.JFrame {
     private final Usuarios u;
     private final Funciones f;
     private final FuncionesLaboratorio fl;
-
+   
     /**
      * Creates new form SeleccioneLaboratorio
      *
@@ -67,8 +67,8 @@ public class SeleccioneLaboratorio extends javax.swing.JFrame {
                 }
             }
         }
-        jPanel2.setLayout(new java.awt.GridLayout(filas, col, 10, 10));
-    }
+                jPanel2.setLayout(new java.awt.GridLayout(filas, col, 10, 10));
+            }
 
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
         JButton boton = (JButton) evt.getSource();

@@ -95,14 +95,19 @@ public class Funciones {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    System.out.println(inputLine);
                     if (inputLine.contains("Host de destino inaccesible")
                             || inputLine.contains("Tiempo de espera agotado")
+                            || inputLine.contains("Request timed out")
                             || inputLine.contains("Red de destino inaccesible")
-                            || inputLine.contains("Error general")) {
+                            || inputLine.contains("Destination host unreachable")
+                            || inputLine.contains("Error general")
+                            || inputLine.contains("General failure")) {
                         return false;
                     }
-                    if (inputLine.contains("tiempo=") || inputLine.contains("tiempo<1m")) {
+                    if (inputLine.contains("tiempo=")
+                            || inputLine.contains("time=")
+                            || inputLine.contains("tiempo<1m")
+                            || inputLine.contains("time<1m")) {
                         return true;
                     }
                 }
@@ -150,7 +155,7 @@ public class Funciones {
         return cedula + res;
     }
 
-    public  boolean validateEmail(String email) {
+    public boolean validateEmail(String email) {
         try {
             String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
             // Compiles the given regular expression into a pattern.

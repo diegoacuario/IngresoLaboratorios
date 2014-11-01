@@ -268,7 +268,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
                 men = "actualizados";
                 men1 = "actualizar";
                 reg = fEqp.editarEquipoDatos(
-                        Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarDatos/",
+                        Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarEquipoDatos/",
                         eqp.getIdEquipo(),
                         jcbEstado.getSelectedIndex(),
                         txtMac.getText(),
@@ -278,6 +278,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
             }
 
         } catch (Exception ex) {
+            System.out.println(ex);
             reg = "false";
         }
         if (reg.equals("true")) {
