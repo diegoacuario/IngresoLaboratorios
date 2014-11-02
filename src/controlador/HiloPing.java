@@ -6,8 +6,6 @@
 package controlador;
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import vista.SeleccioneEquipo;
@@ -45,7 +43,7 @@ public class HiloPing extends Thread {
                                     String res;
                                     try {
                                         res = fEqp.editarEquipoEstado(
-                                                Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarEquipoEstado/",
+                                                Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
                                                 s.getEquipos()[c].getIdEquipo(), 2);
                                     } catch (Exception ex) {
                                         res = "false";
@@ -56,11 +54,9 @@ public class HiloPing extends Thread {
                                     }
                                 }
                             } else if (estado == 1) {
-                                cadaBtn.setBackground(Color.red);
+                                cadaBtn.setBackground(Color.RED);
                             } else if (estado == 2) {
                                 cadaBtn.setBackground(Color.YELLOW);
-                            } else if (estado == 2) {
-                                cadaBtn.setBackground(Color.GREEN);
                             }
                             c++;
                         } catch (NullPointerException e) {

@@ -249,6 +249,7 @@ public final class Login extends javax.swing.JFrame {
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJson(url);
+            System.out.println(json);
             if (json.charAt(0) == '{') {
                 u = fu.obtieneDatosUsuario(json);
                 if (u != null) {
