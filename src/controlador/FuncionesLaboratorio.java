@@ -53,6 +53,13 @@ public class FuncionesLaboratorio {
         ArrayList<Laboratorios> lab = gson.fromJson(formatoJSON, tipoObjeto);
         return lab;
     }
+    public Laboratorios obtieneDatosLaboratorio(String formatoJSON) {
+        Gson gson = new Gson();
+        Type tipoObjeto = new TypeToken<Laboratorios>() {
+        }.getType();
+        Laboratorios lab = gson.fromJson(formatoJSON, tipoObjeto);
+        return lab;
+    }
 
     public Laboratorios[] arrayToMatriz(ArrayList<Laboratorios> labs) {
         Laboratorios lab[] = new Laboratorios[labs.size()];
@@ -60,5 +67,30 @@ public class FuncionesLaboratorio {
             lab[i] = labs.get(i);
         }
         return lab;
+    }
+    public String editarLaboratorio(String url, Integer idLab, String codigo, String nombre, String desc) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        //add reuqest header
+        con.setRequestMethod("POST");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        String urlParameters = "idLab=" + idLab
+                + "&codigo=" + codigo
+                + "&nombre=" + nombre
+                + "&desc=" + desc;
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(urlParameters);
+        wr.flush();
+        wr.close();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        return response.toString();
     }
 }

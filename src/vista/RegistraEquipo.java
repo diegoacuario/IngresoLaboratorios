@@ -279,7 +279,6 @@ public class RegistraEquipo extends javax.swing.JDialog {
             }
 
         } catch (Exception ex) {
-            System.out.println(ex);
             reg = "false";
         }
         if (reg.equals("true")) {
@@ -290,8 +289,6 @@ public class RegistraEquipo extends javax.swing.JDialog {
             }
         } else if (reg.equals("false")) {
             JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
-        } else if (reg.equals("existe")) {
-            JOptionPane.showMessageDialog(rootPane, "Equipo número " + numero + " ya se encuentra registrado.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
