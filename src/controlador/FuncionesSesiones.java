@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import modelo.Sesiones;
 
 /**
@@ -49,6 +50,20 @@ public class FuncionesSesiones {
         }.getType();
         Sesiones sesion = gson.fromJson(formatoJSON, tipoObjeto);
         return sesion;
+    }
+
+    public List<Sesiones> obtieneDatosSesiones(String formatoJSON) {
+        Gson gson = new Gson();
+        Type tipoObjeto = new TypeToken<List<Sesiones>>() {
+        }.getType();
+        List<Sesiones> sesiones = gson.fromJson(formatoJSON, tipoObjeto);
+        for (int i = 0; i < sesiones.size(); i++) {
+            Sesiones s = sesiones.get(i);
+            s.setFechaHoraInicio(s.getFechaHoraInicio().substring(0, 10) + " " + s.getFechaHoraInicio().substring(11, 19));
+            s.setFechaHoraFin(s.getFechaHoraFin().substring(0, 10) + " " + s.getFechaHoraFin().substring(11, 19));
+            sesiones.set(i, s);
+        }
+        return sesiones;
     }
 
     public String finSesion(String url, Integer idSesion) throws Exception {

@@ -42,7 +42,7 @@ public class Menu extends javax.swing.JFrame {
             Equipos eqp = null;
             try {
 
-                eqp = fe.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
+                eqp = fe.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
                 res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
                         eqp.getIdEquipo(), u.getIdUsuario());
             } catch (Exception ex) {

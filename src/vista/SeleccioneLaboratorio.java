@@ -38,7 +38,7 @@ public class SeleccioneLaboratorio extends javax.swing.JFrame {
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
-        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
+        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
         int filas = 4;
         int colExtra = 1;
         if (lab.length % 4 == 0) {

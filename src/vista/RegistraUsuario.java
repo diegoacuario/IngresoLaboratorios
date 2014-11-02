@@ -415,7 +415,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
                 boolean x = false;
 
                 String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + ced;
-                user = fUser.obtieneDatosUsuario(f.obtieneJson(url));
+                user = fUser.obtieneDatosUsuario(f.obtieneJsonGet(url));
                 if (user != null && m != null) {
                     if (user.getRolUsuario() == 1) {
                         x = true;

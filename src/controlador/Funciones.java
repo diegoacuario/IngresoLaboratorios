@@ -8,11 +8,13 @@ package controlador;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -58,17 +60,15 @@ public class Funciones {
         return sesiones;
     }
 
-    public String obtieneJson(String url) {
-        String json = "", lin;
+    public String obtieneJsonGet(String url) {
+        String json = "", linea;
         try {
-            URL pagina = new URL(url);
-            BufferedReader in = new BufferedReader(new InputStreamReader(pagina.openStream()));
-            while ((lin = in.readLine()) != null) {
-                json += lin;
+            BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+            while ((linea = in.readLine()) != null) {
+                json += linea;
             }
-
-        } catch (IOException ex) {
-            return ex+"";
+        } catch (Exception ex) {
+            json = ex + "";
         }
         return json;
     }
@@ -169,6 +169,29 @@ public class Funciones {
             e.printStackTrace();
         }
         return false;
+    }
+     public String obtieneJsonPost(String url, Object parametros[][]) {
+        String json = "", linea;
+        try {
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            String parametrosEnvia = parametros[0][0] + "=" + parametros[0][1];
+            for (Object[] parametro : parametros) {
+                parametrosEnvia += "&" + parametro[0] + "=" + parametro[1];
+            }
+            con.setDoOutput(true);
+            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+                wr.writeBytes(parametrosEnvia);
+                wr.flush();
+            }
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                while ((linea = in.readLine()) != null) {
+                    json += linea;
+                }
+            }
+        } catch (Exception ex) {
+            json = ex + "";
+        }
+        return json;
     }
 
 }

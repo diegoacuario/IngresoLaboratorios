@@ -38,7 +38,7 @@ public class HiloPing extends Thread {
                         try {
                             String texto = ((JLabel) cadaBtn.getComponent(0)).getText();
                             String ip = texto.split(" ")[3];
-                            Equipos eqp = fEqp.obtieneDatosEquipo(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+                            Equipos eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
                             int estado = eqp.getEstado();
                             if (estado == 0) {
                                  cadaBtn.setBackground(Color.GREEN);

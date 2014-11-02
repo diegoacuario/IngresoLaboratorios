@@ -2,6 +2,7 @@ package vista;
 
 import controlador.Funciones;
 import controlador.FuncionesLaboratorio;
+import java.awt.Component;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import modelo.Laboratorios;
@@ -209,14 +210,34 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         } catch (Exception ex) {
             reg = "false";
         }
-        if (reg.equals("true")) {
-            JOptionPane.showMessageDialog(rootPane, "Datos " + men + " correctamente");
-            dispose();
-            if (m != null) {
-                m.setVisible(true);
-            }
-        } else if (reg.equals("false")) {
-            JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
+        switch (reg) {
+            case "true":
+                int x = JOptionPane.showConfirmDialog(rootPane, "Datos " + men + " correctamente,"
+                        + "\ndesea salir de la administración de laboratorios.");
+                if (x == 0) {
+                    dispose();
+                    if (m != null) {
+                        m.setVisible(true);
+                    }
+                } else {
+                    ((Component) evt.getSource()).transferFocus();
+                }
+                break;
+            case "false":
+                int y = JOptionPane.showConfirmDialog(rootPane, "No se pudo " + men1 + " la información,"
+                        + "\ndesea salir de la administración de laboratorios.");
+                if (y == 0) {
+                    dispose();
+                    if (m != null) {
+                        m.setVisible(true);
+                    }
+                } else {
+                    ((Component) evt.getSource()).transferFocus();
+                }
+                break;
+            default:
+                System.out.println(reg);
+                break;
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -231,7 +252,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         char c = evt.getKeyChar();
         String cod = txtCod.getText();
         if (c == 10) {
-            lab = fl.obtieneDatosLaboratorio(f.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/cod=" + cod));
+            lab = fl.obtieneDatosLaboratorio(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/cod=" + cod));
             if (lab != null) {
                 btnGuardar.setText("Actualizar");
                 txtDes.setText(lab.getDescripcion());

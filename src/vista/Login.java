@@ -248,7 +248,7 @@ public final class Login extends javax.swing.JFrame {
         if (txtCedula.getText().length() == 10 && !txtClave.getText().isEmpty() && btnEntrar.isEnabled()) {
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
-            String json = f.obtieneJson(url);
+            String json = f.obtieneJsonGet(url);
             System.out.println(json);
             if (json.charAt(0) == '{') {
                 u = fu.obtieneDatosUsuario(json);
@@ -289,7 +289,7 @@ public final class Login extends javax.swing.JFrame {
         if (txtCedula.getText().length() == 10 && c == 10 && !txtClave.getText().isEmpty() && btnEntrar.isEnabled()) {
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
-            u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+            u = fu.obtieneDatosUsuario(f.obtieneJsonGet(url));
             if (u != null) {
                 hiloVerificaSesiones.stop();
                 if (u.getRolUsuario() == 1) {
@@ -325,7 +325,7 @@ public final class Login extends javax.swing.JFrame {
             }
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
-            u = fu.obtieneDatosUsuario(f.obtieneJson(url));
+            u = fu.obtieneDatosUsuario(f.obtieneJsonGet(url));
             if (u != null) {
                 hiloVerificaSesiones.stop();
                 if (u.getRolUsuario() == 1) {

@@ -45,8 +45,8 @@ public class Sesiones {
         this.fechaHoraFin = fechaHoraFin;
     }
 
-    
 
+    
     public Equipos getIdEquipo() {
         return idEquipo;
     }

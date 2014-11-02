@@ -3,6 +3,7 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesLaboratorio;
+import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -36,7 +37,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
         fe = new Funciones();
         fEqp = new FuncionesEquipo();
         fl = new FuncionesLaboratorio();
-        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(fe.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
+        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
         String nomLab[] = new String[lab.length];
         for (int i = 0; i < nomLab.length; i++) {
             nomLab[i] = lab[i].getIdLaboratorio() + ": " + lab[i].getNombre();
@@ -168,11 +169,6 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jPanel1.add(btnGuardar, gridBagConstraints);
 
         txtNumero.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNumeroKeyTyped(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -252,7 +248,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String reg, men = "guardados", men1 = "guardar";
-        int numero=Integer.parseInt(txtNumero.getText());
+        int numero = Integer.parseInt(txtNumero.getText());
         try {
             if (btnGuardar.getText().equals("Guardar")) {
                 int estado = jcbEstado.getSelectedIndex();
@@ -279,34 +275,44 @@ public class RegistraEquipo extends javax.swing.JDialog {
             }
 
         } catch (Exception ex) {
-            reg = "false";
+            reg = ex + "";
         }
-        if (reg.equals("true")) {
-            JOptionPane.showMessageDialog(rootPane, "Datos " + men + " correctamente");
-            dispose();
-            if (m != null) {
-                m.setVisible(true);
-            }
-        } else if (reg.equals("false")) {
-            JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
+        switch (reg) {
+            case "true":
+                int x = JOptionPane.showConfirmDialog(rootPane, "Datos " + men + " correctamente,"
+                        + "\ndesea salir de la administración de equipos.");
+                if (x == 0) {
+                    dispose();
+                    if (m != null) {
+                        m.setVisible(true);
+                    }
+                } else {
+                    ((Component) evt.getSource()).transferFocus();
+                }
+                break;
+            case "false":
+                int y = JOptionPane.showConfirmDialog(rootPane, "No se pudo " + men1 + " la información,"
+                        + "\ndesea salir de la administración de equipos.");
+                if (y == 0) {
+                    dispose();
+                    if (m != null) {
+                        m.setVisible(true);
+                    }
+                } else {
+                    ((Component) evt.getSource()).transferFocus();
+                }
+                break;
+            default:
+                System.out.println(reg);
+                break;
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumeroKeyTyped
 
     private void txtiPKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtiPKeyReleased
         char c = evt.getKeyChar();
         String ip = txtiP.getText();
         if (c == 10) {
-            boolean ping = fe.ping(ip);
-            if (ping) {
-                jcbEstado.setSelectedIndex(0);
-            } else {
-                jcbEstado.setSelectedIndex(2);
-            }
-            eqp = fEqp.obtieneDatosEquipo(fe.obtieneJson(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+            eqp = fEqp.obtieneDatosEquipo(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
             if (eqp != null) {
                 btnGuardar.setText("Actualizar");
                 jcbEstado.setSelectedIndex(eqp.getEstado());
@@ -314,6 +320,12 @@ public class RegistraEquipo extends javax.swing.JDialog {
                 txtMac.setText(eqp.getMac());
                 txtNumero.setText(eqp.getNumero() + "");
             } else {
+                boolean ping = fe.ping(ip);
+                if (ping) {
+                    jcbEstado.setSelectedIndex(0);
+                } else {
+                    jcbEstado.setSelectedIndex(2);
+                }
                 btnGuardar.setText("Guardar");
                 txtMac.setText("");
                 txtNumero.setText("");
@@ -324,8 +336,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
     }//GEN-LAST:event_txtiPKeyReleased
 
     private void txtMacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMacKeyReleased
-        String val = txtMac.getText();
-        txtMac.setText(val.toUpperCase());
+        txtMac.setText(txtMac.getText().toUpperCase());
     }//GEN-LAST:event_txtMacKeyReleased
 
 
