@@ -10,7 +10,8 @@ import modelo.Usuarios;
  */
 public class MenuAdministrador extends javax.swing.JDialog {
 
-    public  Usuarios u;
+    public Usuarios u;
+    public ReporteSesiones rs=null;
 
     /**
      * Creates new form RegistraPersona
@@ -27,7 +28,7 @@ public class MenuAdministrador extends javax.swing.JDialog {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
 
-        this.setAlwaysOnTop(true);//siempre al frente       
+     //   this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
 
     }
@@ -155,7 +156,13 @@ public class MenuAdministrador extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEqpActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.out.println("Configuraciones");
+        setVisible(false);
+        if (rs == null) {
+            rs = new ReporteSesiones(null, rootPaneCheckingEnabled, this);
+        }
+        rs.setVisible(true);
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed

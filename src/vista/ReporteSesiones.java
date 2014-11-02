@@ -9,6 +9,7 @@ import com.lavantech.gui.comp.DateTimePicker;
 import com.lavantech.gui.comp.DateUnavailabilityModel;
 import java.awt.Font;
 import java.awt.Frame;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.Date;
@@ -20,32 +21,35 @@ import java.util.GregorianCalendar;
  */
 public class ReporteSesiones extends javax.swing.JDialog {
 
-    private DateTimePicker picker1,picker2;
+    private DateTimePicker picker1, picker2;
+    private MenuAdministrador m;
 
     /**
      * Creates new form ReporteSesiones
      *
      * @param parent
      * @param modal
+     * @param m
      */
-    public ReporteSesiones(Frame parent, boolean modal) {
+    public ReporteSesiones(Frame parent, boolean modal, MenuAdministrador m) {
         super(parent, modal);
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
-        picker1 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss"); 
+        this.m = m;
+        this.setAlwaysOnTop(true);//siempre al frente  
+        picker1 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
         picker1.setFont(new Font("Calibri Light", 0, 18));
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new Insets(0, 0, 16, 18);
         jPanel2.add(picker1, gridBagConstraints);
-        picker2 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss"); 
+        picker2 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
         picker2.setFont(new Font("Calibri Light", 0, 18));
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 18);
         jPanel2.add(picker2, gridBagConstraints);
-        
 
     }
 
@@ -69,6 +73,7 @@ public class ReporteSesiones extends javax.swing.JDialog {
         jComboBox1 = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -147,6 +152,16 @@ public class ReporteSesiones extends javax.swing.JDialog {
         jPanel2.add(jButton1, gridBagConstraints);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
+
+        jButton2.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton2);
+
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -156,54 +171,19 @@ public class ReporteSesiones extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-System.out.println(picker1.getCalendar().getGregorianChange());
+        System.out.println(picker1.getCalendar().getGregorianChange());
         System.out.println(picker2.getCalendar().getGregorianChange());
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReporteSesiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReporteSesiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReporteSesiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReporteSesiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        dispose();
+        m.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ReporteSesiones dialog = new ReporteSesiones(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
