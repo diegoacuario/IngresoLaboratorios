@@ -16,7 +16,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private final Menu m;
     private final Usuarios u;
-    private Sesiones idSesion;
+    private Sesiones s;
     private FuncionesSesiones fs;
     private FuncionesEquipo fe;
     private Funciones f;
@@ -29,11 +29,11 @@ public class MenuEstudiante extends javax.swing.JDialog {
      * @param m
      * @param u
      */
-    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u, Sesiones idSesion) {
+    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u, Sesiones s) {
         super(parent, modal);
         this.m = m;
         this.u = u;
-        this.idSesion = idSesion;
+        this.s = s;
         fs = new FuncionesSesiones();
         fe = new FuncionesEquipo();
         f = new Funciones();
@@ -129,24 +129,29 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        String res = "false";
+        String res;
         try {
-            res = fs.finSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/finSesion/", idSesion.getIdSesion());
+            res = fs.finSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/finSesion/", s.getIdSesion());
         } catch (Exception ex) {
-
+            res = "false";
         }
         if (res.equals("true")) {
-            String res2 = "false";
+            String res2;
             try {
                 res2 = fe.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
-                        idSesion.getIdEquipo().getIdEquipo(), 0);
+                        s.getIdEquipo().getIdEquipo(), 0);
             } catch (Exception ex) {
-
+                System.out.println(ex);
+                res2 = "false";
             }
-            dispose();
-            new Login().setVisible(true);
+            if (res2.equals("true")) {
+                dispose();
+                new Login().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Se perdió la conexión con el servidor");
+            }
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Se perdio la conexión con el servidor");
+            JOptionPane.showMessageDialog(rootPane, "Se perdió la conexión con el servidor");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -62,7 +62,7 @@ public class Hilo extends Thread {
                 }
                 l.getBtnEntrar().setEnabled(isConected);
                 l.getBtnRegistrar().setEnabled(isConected);
-                sleep(1000);
+                sleep(3000);
             } catch (InterruptedException ex) {
                 new Login().setVisible(true);
             }

@@ -32,41 +32,46 @@ public class HiloPing extends Thread {
     @Override
     public void run() {
         while (true) {
-            int c = 0;
-            for (JButton[] filaBotones : s.getBotones()) {
-                for (JButton cadaBtn : filaBotones) {
-                    try {
-                        String texto = ((JLabel) cadaBtn.getComponent(0)).getText();
-                        String ip = texto.split(" ")[3];
-                        int estado = s.getEquipos()[c].getEstado();
-                        if (estado == 0) {
-                            if (!f.ping(ip)) {
-                                String res;
-                                try {
-                                    res = fEqp.editarEquipoEstado(
-                                            Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarEquipoEstado/",
-                                            s.getEquipos()[c].getIdEquipo(), 2);
-                                } catch (Exception ex) {
-                                    res = "false";
+            try {
+                int c = 0;
+                for (JButton[] filaBotones : s.getBotones()) {
+                    for (JButton cadaBtn : filaBotones) {
+                        try {
+                            String texto = ((JLabel) cadaBtn.getComponent(0)).getText();
+                            String ip = texto.split(" ")[3];
+                            int estado = s.getEquipos()[c].getEstado();
+                            if (estado == 0) {
+                                if (!f.ping(ip)) {
+                                    String res;
+                                    try {
+                                        res = fEqp.editarEquipoEstado(
+                                                Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editarEquipoEstado/",
+                                                s.getEquipos()[c].getIdEquipo(), 2);
+                                    } catch (Exception ex) {
+                                        res = "false";
+                                    }
+                                    if (res.equals("true")) {
+                                        cadaBtn.setBackground(Color.YELLOW);
+                                        cadaBtn.setToolTipText("Equipo no disponible");
+                                    }
                                 }
-                                if (res.equals("true")) {
-                                    cadaBtn.setBackground(Color.YELLOW);
-                                    cadaBtn.setToolTipText("Equipo no disponible");
-                                }
+                            } else if (estado == 1) {
+                                cadaBtn.setBackground(Color.red);
+                            } else if (estado == 2) {
+                                cadaBtn.setBackground(Color.YELLOW);
+                            } else if (estado == 2) {
+                                cadaBtn.setBackground(Color.GREEN);
                             }
-                        } else if (estado == 1) {
-                            cadaBtn.setBackground(Color.red);
-                        } else if (estado == 2) {
-                            cadaBtn.setBackground(Color.YELLOW);
+                            c++;
+                        } catch (NullPointerException e) {
+                            
                         }
-                        c++;
-                    } catch (NullPointerException e) {
-
                     }
                 }
+                sleep(2000);
+            } catch (InterruptedException ex) {
+               
             }
-            c = 0;
-
         }
     }
 

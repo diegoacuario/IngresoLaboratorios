@@ -252,6 +252,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String reg, men = "guardados", men1 = "guardar";
+        int numero=Integer.parseInt(txtNumero.getText());
         try {
             if (btnGuardar.getText().equals("Guardar")) {
                 int estado = jcbEstado.getSelectedIndex();
@@ -259,7 +260,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
                         Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/registro/",
                         txtiP.getText(),
                         txtMac.getText(),
-                        Integer.parseInt(txtNumero.getText()),
+                        numero,
                         Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]),
                         estado
                 );
@@ -274,7 +275,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
                         txtMac.getText(),
                         txtiP.getText(),
                         Integer.parseInt(jcbLaboratorios.getSelectedItem().toString().split(":")[0]),
-                        Integer.parseInt(txtNumero.getText()));
+                        numero);
             }
 
         } catch (Exception ex) {
@@ -287,8 +288,10 @@ public class RegistraEquipo extends javax.swing.JDialog {
             if (m != null) {
                 m.setVisible(true);
             }
-        } else {
+        } else if (reg.equals("false")) {
             JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información");
+        } else if (reg.equals("existe")) {
+            JOptionPane.showMessageDialog(rootPane, "Equipo número " + numero + " ya se encuentra registrado.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -325,7 +328,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
 
     private void txtMacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMacKeyReleased
         String val = txtMac.getText();
-        txtMac.setText(val.toUpperCase());   
+        txtMac.setText(val.toUpperCase());
     }//GEN-LAST:event_txtMacKeyReleased
 
 

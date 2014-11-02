@@ -64,10 +64,11 @@ public class Funciones {
             URL pagina = new URL(url);
             BufferedReader in = new BufferedReader(new InputStreamReader(pagina.openStream()));
             while ((lin = in.readLine()) != null) {
-                json += lin + "\n";
+                json += lin;
             }
 
         } catch (IOException ex) {
+            return ex+"";
         }
         return json;
     }
@@ -95,6 +96,7 @@ public class Funciones {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
+                    System.out.println(inputLine);
                     if (inputLine.contains("Host de destino inaccesible")
                             || inputLine.contains("Tiempo de espera agotado")
                             || inputLine.contains("Request timed out")

@@ -19,7 +19,7 @@ public class Menu extends javax.swing.JFrame {
     private Funciones f;
     private FuncionesEquipo fe;
     private final Usuarios u;
-    private int idSolicitud;
+    private int idSesion;
     private Sesiones s;
 
     /**
@@ -27,19 +27,18 @@ public class Menu extends javax.swing.JFrame {
      *
      * @param m
      * @param u
+     * @param s
      */
     public Menu(MenuEstudiante m, Usuarios u, Sesiones s) {
         this.u = u;
-
         fs = new FuncionesSesiones();
         fe = new FuncionesEquipo();
         f = new Funciones();
         this.s = s;
         if (s != null) {
-            idSolicitud = s.getIdSesion();
+            idSesion = s.getIdSesion();
         } else {
             String res1;
-            idSolicitud = 0;
             Equipos eqp = null;
             try {
 
@@ -53,20 +52,24 @@ public class Menu extends javax.swing.JFrame {
                 dispose();
                 new Login().setVisible(true);
             } else {
-                String res = "false";
+                String res;
                 try {
                     //Poner equipo como ocupado
                     res = fe.editarEquipo(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
                             eqp.getIdEquipo(), 1);
                 } catch (Exception ex) {
-
+                    res = "false";
                 }
             }
+            idSesion = Integer.parseInt(res1);
+            s = new Sesiones();
+            s.setIdSesion(idSesion);
+            s.setIdEquipo(eqp);
 
-            idSolicitud = Integer.parseInt(res1);
         }
 
         if (m == null) {
+            
             this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u, s);
         }
         initComponents();
