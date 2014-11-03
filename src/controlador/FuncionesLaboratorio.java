@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import com.google.gson.Gson;
@@ -53,6 +48,7 @@ public class FuncionesLaboratorio {
         ArrayList<Laboratorios> lab = gson.fromJson(formatoJSON, tipoObjeto);
         return lab;
     }
+
     public Laboratorios obtieneDatosLaboratorio(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<Laboratorios>() {
@@ -68,6 +64,7 @@ public class FuncionesLaboratorio {
         }
         return lab;
     }
+
     public String editarLaboratorio(String url, Integer idLab, String codigo, String nombre, String desc) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

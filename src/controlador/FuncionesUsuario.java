@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import com.google.gson.Gson;
@@ -13,9 +8,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import modelo.Equipos;
 import modelo.Usuarios;
 
 /**
@@ -86,6 +79,7 @@ public class FuncionesUsuario {
         Usuarios usuario = gson.fromJson(formatoJSON, tipoObjeto);
         return usuario;
     }
+
     public List<Usuarios> obtieneDatosUsuarios(String formatoJSON) {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<List<Usuarios>>() {
@@ -93,7 +87,8 @@ public class FuncionesUsuario {
         List<Usuarios> usuarios = gson.fromJson(formatoJSON, tipoObjeto);
         return usuarios;
     }
-     public Object[] arrayToArreglo(List<Usuarios> usr) {
+
+    public Object[] arrayToArreglo(List<Usuarios> usr) {
         Object eqp[] = new Object[usr.size()];
         for (int i = 0; i < eqp.length; i++) {
             eqp[i] = usr.get(i);

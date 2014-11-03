@@ -84,6 +84,11 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jPanel1.add(jLabel1, gridBagConstraints);
 
         txtiP.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        txtiP.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtiPFocusLost(evt);
+            }
+        });
         txtiP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtiPActionPerformed(evt);
@@ -338,6 +343,29 @@ public class RegistraEquipo extends javax.swing.JDialog {
     private void txtMacKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMacKeyReleased
         txtMac.setText(txtMac.getText().toUpperCase());
     }//GEN-LAST:event_txtMacKeyReleased
+
+    private void txtiPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtiPFocusLost
+        String ip = txtiP.getText();
+        eqp = fEqp.obtieneDatosEquipo(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+        if (eqp != null) {
+            btnGuardar.setText("Actualizar");
+            jcbEstado.setSelectedIndex(eqp.getEstado());
+            jcbLaboratorios.setSelectedItem(eqp.getIdLaboratorio().getIdLaboratorio() + ": " + eqp.getIdLaboratorio().getNombre() + "");
+            txtMac.setText(eqp.getMac());
+            txtNumero.setText(eqp.getNumero() + "");
+        } else {
+            boolean ping = fe.ping(ip);
+            if (ping) {
+                jcbEstado.setSelectedIndex(0);
+            } else {
+                jcbEstado.setSelectedIndex(2);
+            }
+            btnGuardar.setText("Guardar");
+            txtMac.setText("");
+            txtNumero.setText("");
+            jcbLaboratorios.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_txtiPFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

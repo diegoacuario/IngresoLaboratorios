@@ -144,6 +144,11 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         txtDes.setColumns(20);
         txtDes.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
         txtDes.setRows(5);
+        txtDes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDesKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtDes);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -179,16 +184,10 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCodActionPerformed
 
     private void txtCodKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodKeyTyped
-
-    }//GEN-LAST:event_txtCodKeyTyped
-
-    private void txtNomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomKeyTyped
-        char c = evt.getKeyChar();
-        c = (c + "").toLowerCase().charAt(0);
-        if ((c < 'a' || c > 'z') && c != 'ñ' && c != ' ') {
+        if (txtCod.getText().length() >= 10) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtNomKeyTyped
+    }//GEN-LAST:event_txtCodKeyTyped
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String reg, men = "guardados", men1 = "guardar";
@@ -264,6 +263,18 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txtCodKeyReleased
+
+    private void txtDesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDesKeyTyped
+        if (txtCod.getText().length() >= 255) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDesKeyTyped
+
+    private void txtNomKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomKeyTyped
+        if (txtCod.getText().length() >= 45) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNomKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 /**
- *
- * @author MONITOREO LOJA
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class PrecinctCNE {
-      private String name,address,province,canton,parish,zone,district;
+
+    private String name, address, province, canton, parish, zone, district;
 
     public String getName() {
         return name;
@@ -67,5 +63,5 @@ public class PrecinctCNE {
     public void setDistrict(String district) {
         this.district = district;
     }
-      
+
 }

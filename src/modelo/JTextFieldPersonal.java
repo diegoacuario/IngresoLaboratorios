@@ -18,7 +18,7 @@ import javax.swing.border.Border;
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class TextFieldPersonal extends JTextField implements ComponentListener {
+public class JTextFieldPersonal extends JTextField implements ComponentListener {
 
     private final JButton button = new JButton();//X
     private Color borderColor = Color.black;
@@ -33,7 +33,7 @@ public class TextFieldPersonal extends JTextField implements ComponentListener {
     /**
      * Constructor de clase
      */
-    public TextFieldPersonal() {
+    public JTextFieldPersonal() {
         setSize(dimension);
         setPreferredSize(dimension);
 

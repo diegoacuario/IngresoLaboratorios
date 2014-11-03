@@ -1,32 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import modelo.Sesiones;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
@@ -162,7 +151,8 @@ public class Funciones {
         }
         return false;
     }
-     public String obtieneJsonPost(String url, Object parametros[][]) {
+
+    public String obtieneJsonPost(String url, Object parametros[][]) {
         String json = "", linea;
         try {
             HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();

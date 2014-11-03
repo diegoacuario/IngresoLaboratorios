@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import java.io.IOException;
@@ -47,7 +42,6 @@ public class HiloSesiones extends Thread {
                         this.socket = new Socket(ipSerWeb, 3306);
                         isConected = true;
                     }
-                    System.out.println("corriendo");
                     if (isConected) {
                         String json = fs.buscarSesionesIniciadas(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/buscarSesionesIniciadas/", miIp);
                         s = fs.obtieneDatosSesion(json);

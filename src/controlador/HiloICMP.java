@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import java.awt.Color;
@@ -41,7 +36,7 @@ public class HiloICMP extends Thread {
                             Equipos eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
                             int estado = eqp.getEstado();
                             if (estado == 0) {
-                                 cadaBtn.setBackground(Color.GREEN);
+                                cadaBtn.setBackground(Color.GREEN);
                                 if (!f.ping(ip)) {
                                     String res;
                                     try {
@@ -63,13 +58,13 @@ public class HiloICMP extends Thread {
                             }
                             c++;
                         } catch (NullPointerException e) {
-                            
+
                         }
                     }
                 }
                 sleep(2000);
             } catch (InterruptedException ex) {
-               
+
             }
         }
     }

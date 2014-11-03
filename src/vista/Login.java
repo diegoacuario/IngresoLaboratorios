@@ -7,12 +7,12 @@ import controlador.HiloSesiones;
 import java.awt.Component;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import modelo.Bloquea;
 import javax.swing.JOptionPane;
 import modelo.Equipos;
+import modelo.JPasswordFieldPersonal;
+import modelo.JTextFieldPersonal;
 import modelo.Usuarios;
 
 /**
@@ -138,11 +138,11 @@ public final class Login extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
+        txtCedula = new JTextFieldPersonal();
         btnSalir = new javax.swing.JButton();
         btnEntrar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
-        txtClave = new javax.swing.JPasswordField();
+        txtClave = new JPasswordFieldPersonal();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -199,9 +199,10 @@ public final class Login extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipady = 45;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 0.8;
-        gridBagConstraints.insets = new java.awt.Insets(13, 0, 10, 22);
+        gridBagConstraints.insets = new java.awt.Insets(13, 0, 0, 22);
         jPanel2.add(txtCedula, gridBagConstraints);
 
         btnSalir.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
@@ -262,9 +263,10 @@ public final class Login extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 28;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 0.3;
-        gridBagConstraints.insets = new java.awt.Insets(13, 0, 10, 22);
+        gridBagConstraints.insets = new java.awt.Insets(13, 0, 0, 22);
         jPanel2.add(txtClave, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -499,7 +501,7 @@ public final class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txtCedula;
-    private javax.swing.JPasswordField txtClave;
+    private JTextFieldPersonal txtCedula;
+    private JPasswordFieldPersonal txtClave;
     // End of variables declaration//GEN-END:variables
 }
