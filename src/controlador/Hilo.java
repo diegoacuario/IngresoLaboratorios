@@ -8,6 +8,7 @@ package controlador;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import modelo.Equipos;
 import modelo.Sesiones;
 import vista.Login;
 import vista.Menu;
@@ -25,13 +26,15 @@ public class Hilo extends Thread {
     private Funciones f;
     private Login l;
     private boolean isConected;
+    private Equipos eqp;
     Socket s;
 
-    public Hilo(String ip, Login l, Sesiones s, String ips, int port) {
+    public Hilo(String ip, Login l, Sesiones s, String ips, int port, Equipos eqp) {
         this.ip = ip;
         this.port = port;
         this.ips = ips;
         this.l = l;
+        this.eqp = eqp;
         isConected = false;
         fs = new FuncionesSesiones();
         f = new Funciones();
@@ -39,7 +42,7 @@ public class Hilo extends Thread {
 
     public void run() {
         Sesiones s = null;
-        while (s == null) {
+        while (s == null&&eqp!=null) {
             try {
                 try {
 
@@ -57,7 +60,7 @@ public class Hilo extends Thread {
                 }
                 if (s != null) {
                     l.dispose();
-                    Menu m = new Menu(null, s.getIdUsuario(), s);
+                    Menu m = new Menu(null, s.getIdUsuario(), s,eqp);
                     m.setVisible(true);
                 }
                 l.getBtnEntrar().setEnabled(isConected);

@@ -365,23 +365,32 @@ public class RegistraUsuario extends javax.swing.JDialog {
                                             txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), x);
                                 }
                                 if (reg.equals("true")) {
-                                    JOptionPane.showMessageDialog(rootPane, "Datos " + men + " correctamente");
+                                    int y = JOptionPane.showConfirmDialog(rootPane, "Datos " + men + " correctamente,"
+                                            + "\ndesea salir de la administración de usuarios.");
+                                    if (y == 0) {
+                                        dispose();
+                                        if (m != null) {
+                                            m.setVisible(true);
+                                        }
+                                    } else {
+                                        ((Component) evt.getSource()).transferFocus();
+                                    }
+                                } else {
+                                    reg = "false";
+                                }
+                            } catch (Exception ex) {
+                                reg = "false";
+                            }
+                            if (reg.equals("false")) {
+                                int z = JOptionPane.showConfirmDialog(rootPane, "No se pudo " + men1 + " la información, ya se encuentra registrado,contacte con administrador,"
+                                        + "\ndesea salir de la administración de equipos.");
+                                if (z == 0) {
                                     dispose();
                                     if (m != null) {
                                         m.setVisible(true);
                                     }
                                 } else {
-                                    reg = "false";
-                                }
-
-                            } catch (Exception ex) {
-                                reg = "false";
-                            }
-                            if (reg.equals("false")) {
-                                JOptionPane.showMessageDialog(rootPane, "No se pudo " + men1 + " la información, ya se encuentra registrado,contacte con administrador");
-                                dispose();
-                                if (m != null) {
-                                    m.setVisible(true);
+                                    ((Component) evt.getSource()).transferFocus();
                                 }
                             }
                         } else {

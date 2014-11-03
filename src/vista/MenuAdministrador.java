@@ -8,29 +8,22 @@ import modelo.Usuarios;
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class MenuAdministrador extends javax.swing.JDialog {
+public class MenuAdministrador extends javax.swing.JFrame {
 
     public Usuarios u;
     public ReporteSesiones rs=null;
 
     /**
-     * Creates new form RegistraPersona
+     * Creates new form MenuAdministrador
      *
      * @param parent
      * @param modal
      * @param u
      */
     public MenuAdministrador(Frame parent, boolean modal, Usuarios u) {
-        super(parent, modal);
         this.u = u;
-        this.setUndecorated(true);//quita bordes a jframe
+        setTitle("Bienvenido "+u.getNombres()+" "+u.getApellidos());
         initComponents();
-
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
-
-     //   this.setAlwaysOnTop(true);//siempre al frente       
-        //nueva instancia de Bloquea pasando como parametros e este JFrame
-
     }
 
     /**
@@ -50,7 +43,9 @@ public class MenuAdministrador extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -136,7 +131,7 @@ public class MenuAdministrador extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(576, 506));
+        pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -160,9 +155,9 @@ public class MenuAdministrador extends javax.swing.JDialog {
         if (rs == null) {
             rs = new ReporteSesiones(null, rootPaneCheckingEnabled, this);
         }
+        rs.recargarEstudiantes();
         rs.setVisible(true);
-
-
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed

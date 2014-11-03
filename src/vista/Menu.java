@@ -4,6 +4,7 @@ import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
 import java.net.InetAddress;
+import javax.swing.JOptionPane;
 import modelo.Equipos;
 import modelo.Sesiones;
 import modelo.Usuarios;
@@ -19,7 +20,7 @@ public class Menu extends javax.swing.JFrame {
     private Funciones f;
     private FuncionesEquipo fe;
     private final Usuarios u;
-    private int idSesion;
+    private int idSesion = 0;
     private Sesiones s;
 
     /**
@@ -29,7 +30,7 @@ public class Menu extends javax.swing.JFrame {
      * @param u
      * @param s
      */
-    public Menu(MenuEstudiante m, Usuarios u, Sesiones s) {
+    public Menu(MenuEstudiante m, Usuarios u, Sesiones s, Equipos eqp) {
         this.u = u;
         fs = new FuncionesSesiones();
         fe = new FuncionesEquipo();
@@ -39,10 +40,8 @@ public class Menu extends javax.swing.JFrame {
             idSesion = s.getIdSesion();
         } else {
             String res1;
-            Equipos eqp = null;
-            try {
 
-                eqp = fe.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
+            try {
                 res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
                         eqp.getIdEquipo(), u.getIdUsuario());
             } catch (Exception ex) {
@@ -61,15 +60,20 @@ public class Menu extends javax.swing.JFrame {
                     res = "false";
                 }
             }
-            idSesion = Integer.parseInt(res1);
-            s = new Sesiones();
-            s.setIdSesion(idSesion);
-            s.setIdEquipo(eqp);
+            try {
+                idSesion = Integer.parseInt(res1);
+                s = new Sesiones();
+                s.setIdSesion(idSesion);
+                s.setIdEquipo(eqp);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Equipo no registrado");
+                System.exit(0);
+            }
 
         }
 
         if (m == null) {
-            
+
             this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u, s);
         }
         initComponents();

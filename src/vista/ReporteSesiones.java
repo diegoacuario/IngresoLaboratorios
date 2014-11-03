@@ -14,20 +14,22 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import modelo.Usuarios;
 
 /**
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class ReporteSesiones extends javax.swing.JDialog {
-
+public final class ReporteSesiones extends JFrame {
+    
     private final DateTimePicker picker1, picker2;
     private final MenuAdministrador m;
     private final FuncionesUsuario fu;
     private final Funciones f;
+    private List<Usuarios> est;
+    private String s[];
 
     /**
      * Creates new form ReporteSesiones
@@ -37,28 +39,36 @@ public class ReporteSesiones extends javax.swing.JDialog {
      * @param m
      */
     public ReporteSesiones(Frame parent, boolean modal, MenuAdministrador m) {
-        super(parent, modal);
-        this.setUndecorated(true);//quita bordes a jframe
-        initComponents();
         this.m = m;
         fu = new FuncionesUsuario();
-        f = new Funciones();
-        this.setAlwaysOnTop(true);//siempre al frente  
+        f = new Funciones(); 
         picker1 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
+        picker2 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
+        initComponents();
+        agregarBotonesFecha();
+    }
+    
+    public void agregarBotonesFecha() {
         picker1.setFont(new Font("Calibri Light", 0, 18));
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new Insets(0, 0, 16, 18);
         jPanel2.add(picker1, gridBagConstraints);
-        picker2 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
         picker2.setFont(new Font("Calibri Light", 0, 18));
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 18);
         jPanel2.add(picker2, gridBagConstraints);
-        List<Usuarios> est = fu.obtieneDatosUsuarios(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/"));
-        cbxEstudiantes.setModel(new DefaultComboBoxModel((Vector) est));
+    }
+    
+    public void recargarEstudiantes() {
+        est = fu.obtieneDatosUsuarios(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/"));
+        s = new String[est.size()];
+        for (int i = 0; i < est.size(); i++) {
+            s[i] = est.get(i).getCedula() + " " + est.get(i).getNombres() + " " + est.get(i).getApellidos();
+        }
+        cbxEstudiantes.setModel(new DefaultComboBoxModel(s));
     }
 
     /**
@@ -83,7 +93,9 @@ public class ReporteSesiones extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Obtener reporte de sesiones de usuario con rol estudiante");
+        setResizable(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -172,9 +184,18 @@ public class ReporteSesiones extends javax.swing.JDialog {
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_END);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1233, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
-        setSize(new java.awt.Dimension(1311, 658));
+        setSize(new java.awt.Dimension(1249, 664));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
