@@ -89,7 +89,7 @@ public class FuncionesEquipo {
         return lab;
     }
 
-    public Equipos[] arrayToMatriz(ArrayList<Equipos> eqps) {
+    public Equipos[] arrayToArreglo(ArrayList<Equipos> eqps) {
         Equipos eqp[] = new Equipos[eqps.size()];
         for (int i = 0; i < eqp.length; i++) {
             eqp[i] = eqps.get(i);

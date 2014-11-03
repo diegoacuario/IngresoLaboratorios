@@ -6,23 +6,28 @@
 package vista;
 
 import com.lavantech.gui.comp.DateTimePicker;
-import com.lavantech.gui.comp.DateUnavailabilityModel;
+import controlador.Funciones;
+import controlador.FuncionesUsuario;
 import java.awt.Font;
 import java.awt.Frame;
-import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import modelo.Usuarios;
 
 /**
- *
- * @author AYLEEN ROMERO PATIÑO
+ * @web http://www.diegoacuario.blogspot.com
+ * @author diegoacuario
  */
 public class ReporteSesiones extends javax.swing.JDialog {
 
-    private DateTimePicker picker1, picker2;
-    private MenuAdministrador m;
+    private final DateTimePicker picker1, picker2;
+    private final MenuAdministrador m;
+    private final FuncionesUsuario fu;
+    private final Funciones f;
 
     /**
      * Creates new form ReporteSesiones
@@ -36,6 +41,8 @@ public class ReporteSesiones extends javax.swing.JDialog {
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
         this.m = m;
+        fu = new FuncionesUsuario();
+        f = new Funciones();
         this.setAlwaysOnTop(true);//siempre al frente  
         picker1 = new DateTimePicker(new Date(), "yyyy-MM-dd HH:mm:ss");
         picker1.setFont(new Font("Calibri Light", 0, 18));
@@ -50,7 +57,8 @@ public class ReporteSesiones extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 18);
         jPanel2.add(picker2, gridBagConstraints);
-
+        List<Usuarios> est = fu.obtieneDatosUsuarios(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/"));
+        cbxEstudiantes.setModel(new DefaultComboBoxModel((Vector) est));
     }
 
     /**
@@ -70,7 +78,7 @@ public class ReporteSesiones extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbxEstudiantes = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -127,8 +135,8 @@ public class ReporteSesiones extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 19, 0);
         jPanel2.add(jLabel3, gridBagConstraints);
 
-        jComboBox1.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos" }));
+        cbxEstudiantes.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
+        cbxEstudiantes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todos" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -136,7 +144,7 @@ public class ReporteSesiones extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 19, 0);
-        jPanel2.add(jComboBox1, gridBagConstraints);
+        jPanel2.add(cbxEstudiantes, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
         jButton1.setText("Obtener");
@@ -182,9 +190,9 @@ public class ReporteSesiones extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox cbxEstudiantes;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -70,7 +70,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         //nueva instancia de Bloquea pasando como parametros e este JFrame
         new Bloquea(this).block();
         int idLaboratorio = l.getIdLaboratorio();
-        equipos = fl.arrayToMatriz(fl.obtieneDatosEquipos(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/idLaboratorio=" + idLaboratorio)));
+        equipos = fl.arrayToArreglo(fl.obtieneDatosEquipos(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/idLaboratorio=" + idLaboratorio)));
         int filas = 4;
         int colExtra = 1;
         if (equipos.length % 4 == 0) {
