@@ -6,7 +6,6 @@
 package controlador;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 import modelo.Equipos;
 import modelo.Sesiones;
@@ -17,57 +16,56 @@ import vista.Menu;
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class Hilo extends Thread {
+public class HiloSesiones extends Thread {
 
-    private String ip;
-    private String ips;
-    private int port;
-    private FuncionesSesiones fs;
-    private Funciones f;
-    private Login l;
+    private final String miIp, ipSerWeb;
+    private final int port;
+    private final FuncionesSesiones fs;
+    private final Login l;
     private boolean isConected;
-    private Equipos eqp;
-    Socket s;
+    private final Equipos eqp;
+    private Socket socket;
 
-    public Hilo(String ip, Login l, Sesiones s, String ips, int port, Equipos eqp) {
-        this.ip = ip;
+    public HiloSesiones(String miIp, Login l, Sesiones s, String ipSerWeb, int port, Equipos eqp) {
+        this.miIp = miIp;
         this.port = port;
-        this.ips = ips;
+        this.ipSerWeb = ipSerWeb;
         this.l = l;
         this.eqp = eqp;
         isConected = false;
         fs = new FuncionesSesiones();
-        f = new Funciones();
     }
 
+    @Override
     public void run() {
         Sesiones s = null;
-        while (s == null&&eqp!=null) {
+        while (s == null && eqp != null) {
             try {
                 try {
-
                     if (!isConected) {
-                        this.s = new Socket(ips, port);
-                        this.s = new Socket(ips, 3306);
+                        this.socket = new Socket(ipSerWeb, port);
+                        this.socket = new Socket(ipSerWeb, 3306);
                         isConected = true;
                     }
+                    System.out.println("corriendo");
                     if (isConected) {
-                        String json = fs.buscarSesionesIniciadas(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/buscarSesionesIniciadas/", InetAddress.getLocalHost().getHostAddress());
+                        String json = fs.buscarSesionesIniciadas(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/buscarSesionesIniciadas/", miIp);
                         s = fs.obtieneDatosSesion(json);
                     }
-
                 } catch (Exception ex) {
+                    isConected = false;
                 }
                 if (s != null) {
                     l.dispose();
-                    Menu m = new Menu(null, s.getIdUsuario(), s,eqp);
+                    Menu m = new Menu(null, s.getIdUsuario(), s, eqp);
                     m.setVisible(true);
+                    stop();
                 }
                 l.getBtnEntrar().setEnabled(isConected);
                 l.getBtnRegistrar().setEnabled(isConected);
                 sleep(3000);
             } catch (InterruptedException ex) {
-                new Login().setVisible(true);
+                new Login(0).setVisible(true);
             }
         }
     }
@@ -75,13 +73,11 @@ public class Hilo extends Thread {
     public void closeConexion() {
         try {
             try {
-                s.close();
+                socket.close();
                 isConected = false;
-                //System.err.println("Canal Cerrado con el Servidor");
             } catch (NullPointerException ex) {
             }
         } catch (IOException ex) {
-            //System.out.println(ex.getMessage());
         }
     }
 }

@@ -15,13 +15,13 @@ import vista.SeleccioneEquipo;
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class HiloPing extends Thread {
+public class HiloICMP extends Thread {
 
-    private SeleccioneEquipo s;
+    private final SeleccioneEquipo s;
     private final FuncionesEquipo fEqp;
-    private Funciones f;
+    private final Funciones f;
 
-    public HiloPing(SeleccioneEquipo s) {
+    public HiloICMP(SeleccioneEquipo s) {
         //s.getBotones()[0][0].setBackground(Color.blue);
         this.s = s;
         fEqp = new FuncionesEquipo();

@@ -154,7 +154,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
             if (res2.equals("true")) {
                 setVisible(false);
                 dispose();
-                new Login().setVisible(true);
+                new Login(0).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Se perdió la conexión con el servidor");
             }

@@ -3,9 +3,7 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
-import java.net.InetAddress;
 import javax.swing.JOptionPane;
-import modelo.Bloquea;
 import modelo.Equipos;
 import modelo.Sesiones;
 import modelo.Usuarios;
@@ -50,7 +48,7 @@ public class Menu extends javax.swing.JFrame {
             }
             if (res1.equals("false")) {
                 dispose();
-                new Login().setVisible(true);
+                new Login(0).setVisible(true);
             } else {
                 String res;
                 try {

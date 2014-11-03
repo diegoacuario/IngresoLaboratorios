@@ -1,7 +1,10 @@
 package vista;
 
 import controlador.Funciones;
+import controlador.FuncionesPersonaCNE;
 import controlador.FuncionesUsuario;
+import controlador.PersonaCNE;
+import controlador.VoterCNE;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
@@ -90,6 +93,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -104,11 +108,6 @@ public class RegistraUsuario extends javax.swing.JDialog {
         txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtCedulaFocusLost(evt);
-            }
-        });
-        txtCedula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCedulaActionPerformed(evt);
             }
         });
         txtCedula.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -301,10 +300,6 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void txtCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCedulaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCedulaActionPerformed
-
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
         char c = evt.getKeyChar();
         if (c < '0' || c > '9') {
@@ -342,74 +337,89 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (txtCedula.getText().length() == 10) {
-            if (txtCelular.getText().length() == 10 && txtCelular.getText().subSequence(0, 2).equals("09")) {
-                if (txtApellidos.getText().length() > 2 && txtNombres.getText().length() > 2) {
-                    if (f.validateEmail(txtCorreo.getText())) {
-                        if (txtClave.getText().length() > 0) {
-                            String reg, men = "guardados", men1 = "guardar";
-                            int x = 0;
-                            if (jCheckBox1.isSelected()) {
-                                x = 1;
-                            }
-                            try {
-                                if (btnGuardar.getText().equals("Actualizar")) {
-                                    reg = fUser.editarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/editar/",
-                                            user.getIdUsuario(),
-                                            txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
-                                            txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), x);
-                                    men = "actualizados";
-                                    men1 = "actualizar";
-                                } else {
-                                    reg = fUser.registrarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/registro/",
-                                            txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
-                                            txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), x);
+            if (txtCedula.getText().equals(f.completaDecimoDig(txtCedula.getText().substring(0, 9)))) {
+                if (txtCelular.getText().length() == 10 && txtCelular.getText().subSequence(0, 2).equals("09")) {
+                    if (txtApellidos.getText().length() > 2 && txtNombres.getText().length() > 2) {
+                        if (f.validateEmail(txtCorreo.getText())) {
+                            if (txtClave.getText().length() > 0) {
+                                String reg, men = "guardados", men1 = "guardar";
+                                int x = 0;
+                                if (jCheckBox1.isSelected()) {
+                                    x = 1;
                                 }
-                                if (reg.equals("true")) {
-                                    int y = JOptionPane.showConfirmDialog(rootPane, "Datos " + men + " correctamente,"
+                                try {
+                                    if (btnGuardar.getText().equals("Actualizar")) {
+                                        reg = fUser.editarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/editar/",
+                                                user.getIdUsuario(),
+                                                txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
+                                                txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), x);
+                                        men = "actualizados";
+                                        men1 = "actualizar";
+                                    } else {
+                                        reg = fUser.registrarUsuario(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/registro/",
+                                                txtCedula.getText(), txtClave.getText(), txtNombres.getText(),
+                                                txtApellidos.getText(), txtCorreo.getText(), txtCelular.getText(), x);
+                                    }
+                                    if (reg.equals("true")) {
+                                        int y = JOptionPane.showConfirmDialog(rootPane, "Datos " + men + " correctamente,"
+                                                + "\ndesea salir de la administración de usuarios.");
+                                        if (y == 0) {
+                                            txtNombres.setText("");
+                                            txtApellidos.setText("");
+                                            txtClave.setText("");
+                                            txtCelular.setText("");
+                                            txtCorreo.setText("");
+                                            dispose();
+                                            if (m != null) {
+                                                m.setVisible(true);
+                                            }
+                                        } else {
+                                            ((Component) evt.getSource()).transferFocus();
+                                        }
+                                    } else {
+                                        reg = "false";
+                                    }
+                                } catch (Exception ex) {
+                                    reg = "false";
+                                }
+                                if (reg.equals("false")) {
+                                    int z = JOptionPane.showConfirmDialog(rootPane, "No se pudo " + men1 + " la información, ya se encuentra registrado,contacte con administrador,"
                                             + "\ndesea salir de la administración de usuarios.");
-                                    if (y == 0) {
+                                    if (z == 0) {
                                         dispose();
+                                        txtNombres.setText("");
+                                        txtApellidos.setText("");
+                                        txtClave.setText("");
+                                        txtCelular.setText("");
+                                        txtCorreo.setText("");
                                         if (m != null) {
                                             m.setVisible(true);
                                         }
                                     } else {
                                         ((Component) evt.getSource()).transferFocus();
                                     }
-                                } else {
-                                    reg = "false";
                                 }
-                            } catch (Exception ex) {
-                                reg = "false";
-                            }
-                            if (reg.equals("false")) {
-                                int z = JOptionPane.showConfirmDialog(rootPane, "No se pudo " + men1 + " la información, ya se encuentra registrado,contacte con administrador,"
-                                        + "\ndesea salir de la administración de equipos.");
-                                if (z == 0) {
-                                    dispose();
-                                    if (m != null) {
-                                        m.setVisible(true);
-                                    }
-                                } else {
-                                    ((Component) evt.getSource()).transferFocus();
-                                }
+                            } else {
+                                JOptionPane.showMessageDialog(rootPane, "Ingrese una clave por favor");
                             }
                         } else {
-                            JOptionPane.showMessageDialog(rootPane, "Ingrese una clave por favor");
+                            JOptionPane.showMessageDialog(rootPane, "Correo inválido");
                         }
+
                     } else {
-                        JOptionPane.showMessageDialog(rootPane, "Correo inválido");
+                        JOptionPane.showMessageDialog(rootPane, "Verifique los nombres y apellidos");
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "Verifique los nombres y apellidos");
+                    JOptionPane.showMessageDialog(rootPane, "El número de celular debe tener 10 dígitos y debe empezar con 09");
                 }
-
             } else {
-                JOptionPane.showMessageDialog(rootPane, "El número de celular debe tener 10 dígitos y debe empezar con 09");
+                JOptionPane.showMessageDialog(rootPane, "El número de cedula es incorrecto");
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "El número de cedula debe tener 10 dígitos");
         }
+
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -417,12 +427,17 @@ public class RegistraUsuario extends javax.swing.JDialog {
         if (txtCedula.getText().length() == 9) {
             txtCedula.setText(f.completaDecimoDig(txtCedula.getText()));
             ((Component) evt.getSource()).transferFocus();
+        } else {
+            txtNombres.setText("");
+            txtApellidos.setText("");
+            txtClave.setText("");
+            txtCelular.setText("");
+            txtCorreo.setText("");
         }
         if (u != null) {
             String ced = txtCedula.getText();
             if (ced.length() == 10) {
                 boolean x = false;
-
                 String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + ced;
                 user = fUser.obtieneDatosUsuario(f.obtieneJsonGet(url));
                 if (user != null && m != null) {
@@ -450,8 +465,32 @@ public class RegistraUsuario extends javax.swing.JDialog {
                 txtCelular.setText("");
                 txtCorreo.setText("");
             }
-        }
+        } else {
+            FuncionesPersonaCNE fpC = new FuncionesPersonaCNE();
+            VoterCNE v = fpC.obtienePersona(fpC.datos(txtCedula.getText()));
 
+            if (v != null) {
+                PersonaCNE p = v.getVoter();
+                if (p != null) {
+                    txtNombres.setEditable(false);
+                    txtApellidos.setEditable(false);
+                    String dat[] = p.getFullName().split(" ");
+                    String nom = "";
+                    for (int i = 2; i < dat.length; i++) {
+                        nom += dat[i];
+                        if (i < dat.length - 1) {
+                            nom += " ";
+                        }
+                    }
+                    txtNombres.setText(nom);
+                    txtApellidos.setText(dat[0] + " " + dat[1]);
+                    ((Component) txtApellidos).transferFocus();
+                }
+            } else {
+                txtNombres.setEditable(true);
+                txtApellidos.setEditable(true);
+            }
+        }
     }//GEN-LAST:event_txtCedulaKeyReleased
 
     private void btnEliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliActionPerformed
@@ -471,7 +510,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
                     if (y == x) {
                         dispose();
                         if (m != null) {
-                            new Login().setVisible(true);
+                            new Login(0).setVisible(true);
                             m.dispose();
                         }
                     }
@@ -493,8 +532,63 @@ public class RegistraUsuario extends javax.swing.JDialog {
         if (txtCedula.getText().length() >= 9) {
             txtCedula.setText(f.completaDecimoDig(txtCedula.getText().substring(0, 9)));
         }
+        if (u != null) {
+            String ced = txtCedula.getText();
+            if (ced.length() == 10) {
+                boolean x = false;
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + ced;
+                user = fUser.obtieneDatosUsuario(f.obtieneJsonGet(url));
+                if (user != null && m != null) {
+                    if (user.getRolUsuario() == 1) {
+                        x = true;
+                    }
+                    btnEli.setVisible(true);
+                    jCheckBox1.setSelected(x);
+                    txtNombres.setText(user.getNombres());
+                    txtApellidos.setText(user.getApellidos());
+                    txtClave.setText(user.getClave());
+                    txtCelular.setText(user.getCelular());
+                    txtCorreo.setText(user.getCorreo());
+                    btnGuardar.setText("Actualizar");
+                } else {
+                    btnEli.setVisible(false);
+                }
+            } else {
+                jCheckBox1.setSelected(false);
+                btnGuardar.setText("Guardar");
+                btnEli.setVisible(false);
+                txtNombres.setText("");
+                txtApellidos.setText("");
+                txtClave.setText("");
+                txtCelular.setText("");
+                txtCorreo.setText("");
+            }
+        } else {
+            FuncionesPersonaCNE fpC = new FuncionesPersonaCNE();
+            VoterCNE v = fpC.obtienePersona(fpC.datos(txtCedula.getText()));
 
-
+            if (v != null) {
+                PersonaCNE p = v.getVoter();
+                if (p != null) {
+                    txtNombres.setEditable(false);
+                    txtApellidos.setEditable(false);
+                    String dat[] = p.getFullName().split(" ");
+                    String nom = "";
+                    for (int i = 2; i < dat.length; i++) {
+                        nom += dat[i];
+                        if (i < dat.length - 1) {
+                            nom += " ";
+                        }
+                    }
+                    txtNombres.setText(nom);
+                    txtApellidos.setText(dat[0] + " " + dat[1]);
+                    ((Component) txtApellidos).transferFocus();
+                }
+            } else {
+                txtNombres.setEditable(true);
+                txtApellidos.setEditable(true);
+            }
+        }
     }//GEN-LAST:event_txtCedulaFocusLost
 
 

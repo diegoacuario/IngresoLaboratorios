@@ -52,14 +52,6 @@ public class Funciones {
         return prop;
     }
 
-    public ArrayList<Sesiones> obtieneSesiones(String formatoJSON) {
-        Gson gson = new Gson();
-        Type tipoObjeto = new TypeToken<List<Sesiones>>() {
-        }.getType();
-        ArrayList<Sesiones> sesiones = gson.fromJson(formatoJSON, tipoObjeto);
-        return sesiones;
-    }
-
     public String obtieneJsonGet(String url) {
         String json = "", linea;
         try {

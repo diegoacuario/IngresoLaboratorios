@@ -3,11 +3,10 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesUsuario;
-import controlador.Hilo;
+import controlador.HiloSesiones;
 import java.awt.Component;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -22,50 +21,65 @@ import modelo.Usuarios;
  */
 public final class Login extends javax.swing.JFrame {
 
-    public Properties fileConfig;
-    private final String ip;
+    private final String ipServidor;
     private Usuarios u;
-    private String thisIp = null;
-    private String rest = null;
+    private String miIp = null;
+    private String urlSerWeb;
     private String ipServicioWeb = null;
-    private Hilo hiloVerificaSesiones = null;
+    private HiloSesiones hiloVerificaSesiones;
     private int x = 0;
     boolean isConected = false;
     private Funciones f;
     private FuncionesEquipo fe;
+    private FuncionesUsuario fu;
     private Equipos eqp;
 
     /**
      * Creates new form jFrameBlocked
+     *
+     * @param estado
      */
-    public Login() {
+    public Login(int estado) {
         f = new Funciones();
         fe = new FuncionesEquipo();
+        fu = new FuncionesUsuario();
+        ipServidor = Funciones.getFileProperties("classes/confi.properties").getProperty("ip_servidor");
+        urlSerWeb = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web");
         try {
-            eqp = fe.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + InetAddress.getLocalHost().getHostAddress()));
+            miIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            System.out.println(e);
+            miIp = null;
+        }
+        if (miIp == null) {
+            JOptionPane.showMessageDialog(rootPane, "No se puede obtener ip del equipo verifique su conexión a la red.");
+            System.exit(0);
+        } else if (miIp.equals("127.0.0.1")) {
+            JOptionPane.showMessageDialog(rootPane, "El equipo se encuentra con la ip 127.0.0.1, verifique su conexión a la red.");
+            System.exit(0);
+        }
+        setUndecorated(true);
+        initComponents();
+        try {
+            eqp = fe.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + miIp));
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, "Equipo no esta conectado a la red, o servicio web no esta levantado");
-            eqp = null;
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(rootPane, "Error al verificar si equipo esta registrado, verifique la consola");
+            System.exit(0);
+        }
+        if (!conectar()) {
+            JOptionPane.showMessageDialog(rootPane, "No se puede concetar al servicio web verifique su archivo de configuración.");
             System.exit(0);
         }
 
-        fileConfig = Funciones.getFileProperties("classes/confi.properties");
-        this.ip = fileConfig.getProperty("ip_servidor");
-        this.rest = fileConfig.getProperty("servicio_web");
-        this.setUndecorated(true);//quita bordes a jframe
-        try {
-            thisIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException ex) {
-
+        if (eqp == null && !ipServidor.equals(miIp) && estado == 1) {
+            JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado, ingrese como administrador y regístrelo");
         }
-        initComponents();
-        conectar();
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
-        this.setExtendedState(MAXIMIZED_BOTH);//maximizado
-        this.setAlwaysOnTop(true);//siempre al frente
-        //nueva instancia de Bloquea pasando como parametros e este JFrame
-        new Bloquea(this).block();
 
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);//maximizado
+        setAlwaysOnTop(true);//siempre al frente
+        new Bloquea(this).block(); //nueva instancia de Bloquea pasando como parametros e este JFrame
     }
 
     public JButton getBtnEntrar() {
@@ -84,18 +98,29 @@ public final class Login extends javax.swing.JFrame {
         this.btnRegistrar = btnRegistrar;
     }
 
-    public void conectar() {
+    public boolean conectar() {
         int port;
         try {
-            port = Integer.parseInt(rest.split("/")[2].split(":")[1]);
+            port = Integer.parseInt(urlSerWeb.split("/")[2].split(":")[1]);
         } catch (Exception e) {
-            port = 80;
+            if ((e + "").contains("ArrayIndexOutOfBoundsException")) {
+                port = 80;
+            } else {
+                return false;
+            }
         }
-        ipServicioWeb = rest.split("/")[2].split(":")[0];
-        hiloVerificaSesiones = new Hilo(thisIp, this, null, ipServicioWeb, port, eqp);
-        hiloVerificaSesiones.start();
-        if (!ip.equals(thisIp)) {
-            btnRegistrar.setVisible(false);
+        try {
+            ipServicioWeb = urlSerWeb.split("/")[2].split(":")[0];
+            hiloVerificaSesiones = new HiloSesiones(miIp, this, null, ipServicioWeb, port, eqp);
+            hiloVerificaSesiones.start();
+            if (ipServidor.equals(miIp)) {
+                btnEntrar.setToolTipText("Ingresar al servidor");
+            } else {
+                btnEntrar.setToolTipText("Ingresar al equipo");
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -258,20 +283,18 @@ public final class Login extends javax.swing.JFrame {
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         if (txtCedula.getText().length() == 10 && !txtClave.getText().isEmpty() && btnEntrar.isEnabled()) {
-            FuncionesUsuario fu = new FuncionesUsuario();
-            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
+            String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
             if (!json.isEmpty()) {
                 if (json.charAt(0) == '{') {
                     u = fu.obtieneDatosUsuario(json);
                     if (u != null) {
-                        hiloVerificaSesiones.stop();
                         if (u.getRolUsuario() == 1) {
                             dispose();
                             MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
                             m.setVisible(true);
                         } else {
-                            if (ip.equals(thisIp)) {
+                            if (ipServidor.equals(miIp)) {
                                 SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
                                 d.setVisible(true);
                                 this.dispose();
@@ -279,9 +302,11 @@ public final class Login extends javax.swing.JFrame {
                                 if (eqp != null) {
                                     Menu m = new Menu(null, u, null, eqp);
                                     m.setVisible(true);
-                                    this.dispose();
+                                    dispose();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                    dispose();
+                                    new Login(0).setVisible(true);
                                 }
                             }
                         }
@@ -306,10 +331,8 @@ public final class Login extends javax.swing.JFrame {
     private void txtClaveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClaveKeyTyped
         int c = evt.getKeyChar();
         if (txtCedula.getText().length() == 10 && c == 10 && !txtClave.getText().isEmpty() && btnEntrar.isEnabled()) {
-            FuncionesUsuario fu = new FuncionesUsuario();
-            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
+            String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
-            System.out.println(json);
             if (!json.isEmpty()) {
                 if (json.charAt(0) == '{') {
                     u = fu.obtieneDatosUsuario(json);
@@ -320,17 +343,19 @@ public final class Login extends javax.swing.JFrame {
                             MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
                             m.setVisible(true);
                         } else {
-                            if (ip.equals(thisIp)) {
+                            if (ipServidor.equals(miIp)) {
                                 SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
                                 d.setVisible(true);
-                                this.dispose();
+                                dispose();
                             } else {
                                 if (eqp != null) {
                                     Menu m = new Menu(null, u, null, eqp);
                                     m.setVisible(true);
-                                    this.dispose();
+                                    dispose();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                    dispose();
+                                    new Login(0).setVisible(true);
                                 }
                             }
                         }
@@ -357,7 +382,7 @@ public final class Login extends javax.swing.JFrame {
                 x = 0;
             }
             FuncionesUsuario fu = new FuncionesUsuario();
-            String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
+            String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
             System.out.println(json);
             if (!json.isEmpty()) {
@@ -370,7 +395,7 @@ public final class Login extends javax.swing.JFrame {
                             MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
                             m.setVisible(true);
                         } else {
-                            if (ip.equals(thisIp)) {
+                            if (ipServidor.equals(miIp)) {
                                 SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
                                 d.setVisible(true);
                                 this.dispose();
@@ -381,6 +406,8 @@ public final class Login extends javax.swing.JFrame {
                                     this.dispose();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                    dispose();
+                                    new Login(0).setVisible(true);
                                 }
                             }
                         }
@@ -436,16 +463,21 @@ public final class Login extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -455,7 +487,7 @@ public final class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new Login(1).setVisible(true);
             }
         });
     }

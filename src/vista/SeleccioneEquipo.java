@@ -3,7 +3,7 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
-import controlador.HiloPing;
+import controlador.HiloICMP;
 import java.awt.BorderLayout;
 import modelo.Bloquea;
 import java.awt.Color;
@@ -37,7 +37,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         this.equipos = equipos;
     }
     private JButton botones[][];
-    HiloPing h;
+    HiloICMP h;
 
     public JButton[][] getBotones() {
         return botones;
@@ -112,7 +112,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
             }
             jPanel2.setLayout(new java.awt.GridLayout(4, 5, 10, 10));
         }
-        h = new HiloPing(this);
+        h = new HiloICMP(this);
         h.start();
     }
 
@@ -144,7 +144,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 }
                 if (res1.equals("false")) {
                     dispose();
-                    new Login().setVisible(true);
+                    new Login(0).setVisible(true);
                 } else {
                     String res = "false";
                     try {
@@ -156,7 +156,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                     }
                 }
                 if (x == 0) {
-                    new Login().setVisible(true);
+                    new Login(0).setVisible(true);
                     dispose();
                 } else {
                     Component c[] = jPanel2.getComponents();
@@ -185,9 +185,9 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -195,8 +195,6 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Acceso correcto");
-
-        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jPanel2.setPreferredSize(new java.awt.Dimension(1200, 600));
 
@@ -213,14 +211,9 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel2);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weighty = 0.3;
-        jPanel1.add(jScrollPane1, gridBagConstraints);
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -229,26 +222,27 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weighty = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 100);
+        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 67);
         jPanel1.add(jLabel1, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        jButton1.setText("Cerrar sesión");
+        jButton1.setText("Salir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
         jPanel1.add(jButton1, gridBagConstraints);
 
         jButton2.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
-        jButton2.setText("Otros laboratorios");
+        jButton2.setText("Laboratorios");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -258,6 +252,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.ipadx = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         gridBagConstraints.weightx = 0.6;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
         jPanel1.add(jButton2, gridBagConstraints);
@@ -269,16 +264,16 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weighty = 0.4;
-        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 100);
+        gridBagConstraints.insets = new java.awt.Insets(0, 100, 0, 86);
         jPanel1.add(lblNombre, gridBagConstraints);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new Login().setVisible(true);
+        new Login(0).setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
