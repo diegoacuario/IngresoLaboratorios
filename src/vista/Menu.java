@@ -5,6 +5,7 @@ import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
 import java.net.InetAddress;
 import javax.swing.JOptionPane;
+import modelo.Bloquea;
 import modelo.Equipos;
 import modelo.Sesiones;
 import modelo.Usuarios;
@@ -69,18 +70,14 @@ public class Menu extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Equipo no registrado");
                 System.exit(0);
             }
-
         }
-
         if (m == null) {
-
             this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u, s);
         }
-        initComponents();
-        setExtendedState(MAXIMIZED_BOTH);//maximizado
         setUndecorated(true);//quita bordes a jframe
+        initComponents();
+        setExtendedState(MAXIMIZED_BOTH);//maximizado        
         setVisible(true);
-
         setBounds(getWidth() - 120, (getHeight() / 2) - 20, 120, 40);
         setAlwaysOnTop(true);//siempre al frente   
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -129,6 +126,7 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();
         m.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

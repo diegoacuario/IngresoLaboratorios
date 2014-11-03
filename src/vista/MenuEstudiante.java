@@ -3,6 +3,8 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import modelo.Sesiones;
@@ -28,6 +30,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
      * @param modal
      * @param m
      * @param u
+     * @param s
      */
     public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u, Sesiones s) {
         super(parent, modal);
@@ -39,7 +42,11 @@ public class MenuEstudiante extends javax.swing.JDialog {
         f = new Funciones();
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
-
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                System.exit(0);
+            }
+        });
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
 
         this.setAlwaysOnTop(true);//siempre al frente       
@@ -145,6 +152,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
                 res2 = "false";
             }
             if (res2.equals("true")) {
+                setVisible(false);
                 dispose();
                 new Login().setVisible(true);
             } else {

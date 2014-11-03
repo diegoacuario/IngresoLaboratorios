@@ -92,7 +92,7 @@ public final class Login extends javax.swing.JFrame {
             port = 80;
         }
         ipServicioWeb = rest.split("/")[2].split(":")[0];
-        hiloVerificaSesiones = new Hilo(thisIp, this, null, ipServicioWeb, port,eqp);
+        hiloVerificaSesiones = new Hilo(thisIp, this, null, ipServicioWeb, port, eqp);
         hiloVerificaSesiones.start();
         if (!ip.equals(thisIp)) {
             btnRegistrar.setVisible(false);
@@ -261,35 +261,38 @@ public final class Login extends javax.swing.JFrame {
             FuncionesUsuario fu = new FuncionesUsuario();
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
-            System.out.println(json);
-            if (json.charAt(0) == '{') {
-                u = fu.obtieneDatosUsuario(json);
-                if (u != null) {
-                    hiloVerificaSesiones.stop();
-                    if (u.getRolUsuario() == 1) {
-                        dispose();
-                        MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
-                        m.setVisible(true);
-                    } else {
-                        if (ip.equals(thisIp)) {
-                            SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
-                            d.setVisible(true);
-                            this.dispose();
+            if (!json.isEmpty()) {
+                if (json.charAt(0) == '{') {
+                    u = fu.obtieneDatosUsuario(json);
+                    if (u != null) {
+                        hiloVerificaSesiones.stop();
+                        if (u.getRolUsuario() == 1) {
+                            dispose();
+                            MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
+                            m.setVisible(true);
                         } else {
-                            if (eqp != null) {
-                                Menu m = new Menu(null, u, null, eqp);
-                                m.setVisible(true);
+                            if (ip.equals(thisIp)) {
+                                SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                                d.setVisible(true);
                                 this.dispose();
                             } else {
-                                JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                if (eqp != null) {
+                                    Menu m = new Menu(null, u, null, eqp);
+                                    m.setVisible(true);
+                                    this.dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                }
                             }
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                    JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
@@ -307,34 +310,38 @@ public final class Login extends javax.swing.JFrame {
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
             System.out.println(json);
-            if (json.charAt(0) == '{') {
-                u = fu.obtieneDatosUsuario(json);
-                if (u != null) {
-                    hiloVerificaSesiones.stop();
-                    if (u.getRolUsuario() == 1) {
-                        dispose();
-                        MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
-                        m.setVisible(true);
-                    } else {
-                        if (ip.equals(thisIp)) {
-                            SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
-                            d.setVisible(true);
-                            this.dispose();
+            if (!json.isEmpty()) {
+                if (json.charAt(0) == '{') {
+                    u = fu.obtieneDatosUsuario(json);
+                    if (u != null) {
+                        hiloVerificaSesiones.stop();
+                        if (u.getRolUsuario() == 1) {
+                            dispose();
+                            MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
+                            m.setVisible(true);
                         } else {
-                            if (eqp != null) {
-                                Menu m = new Menu(null, u, null, eqp);
-                                m.setVisible(true);
+                            if (ip.equals(thisIp)) {
+                                SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                                d.setVisible(true);
                                 this.dispose();
                             } else {
-                                JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                if (eqp != null) {
+                                    Menu m = new Menu(null, u, null, eqp);
+                                    m.setVisible(true);
+                                    this.dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                }
                             }
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                    JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
             }
         }
     }//GEN-LAST:event_txtClaveKeyTyped
@@ -353,40 +360,44 @@ public final class Login extends javax.swing.JFrame {
             String url = fileConfig.getProperty("servicio_web") + "webresources/modelo.usuarios/cedula=" + txtCedula.getText() + ",clave=" + txtClave.getText();
             String json = f.obtieneJsonGet(url);
             System.out.println(json);
-            if (json.charAt(0) == '{') {
-                u = fu.obtieneDatosUsuario(json);
-                if (u != null) {
-                    hiloVerificaSesiones.stop();
-                    if (u.getRolUsuario() == 1) {
-                        dispose();
-                        MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
-                        m.setVisible(true);
-                    } else {
-                        if (ip.equals(thisIp)) {
-                            SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
-                            d.setVisible(true);
-                            this.dispose();
+            if (!json.isEmpty()) {
+                if (json.charAt(0) == '{') {
+                    u = fu.obtieneDatosUsuario(json);
+                    if (u != null) {
+                        hiloVerificaSesiones.stop();
+                        if (u.getRolUsuario() == 1) {
+                            dispose();
+                            MenuAdministrador m = new MenuAdministrador(this, rootPaneCheckingEnabled, u);
+                            m.setVisible(true);
                         } else {
-                            if (eqp != null) {
-                                Menu m = new Menu(null, u, null, eqp);
-                                m.setVisible(true);
+                            if (ip.equals(thisIp)) {
+                                SeleccioneLaboratorio d = new SeleccioneLaboratorio(u);
+                                d.setVisible(true);
                                 this.dispose();
                             } else {
-                                JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                if (eqp != null) {
+                                    Menu m = new Menu(null, u, null, eqp);
+                                    m.setVisible(true);
+                                    this.dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
+                                }
                             }
+                        }
+                    } else {
+                        if (x == 1) {
+                            x = 2;
+                        }
+                        if (c == 10 && x == 0) {
+                            JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
+                            x = 1;
                         }
                     }
                 } else {
-                    if (x == 1) {
-                        x = 2;
-                    }
-                    if (c == 10 && x == 0) {
-                        JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
-                        x = 1;
-                    }
+                    JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Servidor web no esta levantado");
+                JOptionPane.showMessageDialog(this, "Usuario o contraseña erróneos");
             }
         }
     }//GEN-LAST:event_txtCedulaKeyReleased
