@@ -10,12 +10,22 @@ public class Laboratorios {
     private String nombre;
     private String codigo;
     private String descripcion;
+    private int bloqueado;
 
-    public Laboratorios(int idLaboratorio, String nombre, String codigo, String descripcion) {
+    public Laboratorios(int idLaboratorio, String nombre, String codigo, String descripcion,int bloqueado) {
         this.idLaboratorio = idLaboratorio;
         this.nombre = nombre;
         this.codigo = codigo;
         this.descripcion = descripcion;
+        this.bloqueado = bloqueado;
+    }
+
+    public int getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(int bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public Laboratorios(String nombre, String codigo, String descripcion) {

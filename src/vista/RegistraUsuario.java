@@ -93,7 +93,6 @@ public class RegistraUsuario extends javax.swing.JDialog {
         jCheckBox1 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
@@ -222,7 +221,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
         jPanel1.add(jButton1, gridBagConstraints);
 
         btnEli.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
-        btnEli.setText("Eliminar");
+        btnEli.setText("Bloquear");
         btnEli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliActionPerformed(evt);
@@ -444,6 +443,12 @@ public class RegistraUsuario extends javax.swing.JDialog {
                     if (user.getRolUsuario() == 1) {
                         x = true;
                     }
+                    if (user.getBloqueado() == 0) {
+                        btnEli.setText("Bloquear");
+                    } else {
+                        btnEli.setText("Desbloquear");
+                    }
+                    btnEli.setVisible(true);
                     btnEli.setVisible(true);
                     jCheckBox1.setSelected(x);
                     txtNombres.setText(user.getNombres());
@@ -494,19 +499,22 @@ public class RegistraUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCedulaKeyReleased
 
     private void btnEliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliActionPerformed
-        int x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar el usuario:\n" + user.getNombres() + " " + user.getApellidos());
+        String valor = "desbloque";
+        if (btnEli.getText().equals("Bloquear")) {
+            valor = "bloque";
+        }
+        int x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea " + valor + "ar el usuario:\n" + user.getNombres() + " " + user.getApellidos());
         int y = -1;
         if (x == 0) {
             if (u.getCedula().equals(user.getCedula())) {
-                x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar su propio usuario");
+                x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea " + valor + "ar su propio usuario");
                 y = x;
             }
             if (x == 0) {
-                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web"
-                ) + "webresources/modelo.usuarios/eliminar/" + user.getIdUsuario();
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.usuarios/" + valor + "ar/" + user.getIdUsuario();
                 String val = f.obtieneTexto(url);
                 if (val.equals("true")) {
-                    JOptionPane.showMessageDialog(rootPane, "Usuario eliminado correctamente");
+                    JOptionPane.showMessageDialog(rootPane, "Usuario " + valor + "ado correctamente");
                     if (y == x) {
                         dispose();
                         if (m != null) {
@@ -521,7 +529,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
                     txtCelular.setText("");
                     txtCorreo.setText("");
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "No se pudo eliminar el usuario");
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo " + valor + "ar el usuario");
                 }
             }
 
@@ -541,6 +549,11 @@ public class RegistraUsuario extends javax.swing.JDialog {
                 if (user != null && m != null) {
                     if (user.getRolUsuario() == 1) {
                         x = true;
+                    }
+                    if (user.getBloqueado() == 0) {
+                        btnEli.setText("Bloquear");
+                    } else {
+                        btnEli.setText("Desbloquear");
                     }
                     btnEli.setVisible(true);
                     jCheckBox1.setSelected(x);

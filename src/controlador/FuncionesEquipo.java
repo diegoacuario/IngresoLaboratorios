@@ -80,8 +80,12 @@ public class FuncionesEquipo {
         Gson gson = new Gson();
         Type tipoObjeto = new TypeToken<Equipos>() {
         }.getType();
-        Equipos lab = gson.fromJson(formatoJSON, tipoObjeto);
-        return lab;
+        try {
+            Equipos lab = gson.fromJson(formatoJSON, tipoObjeto);
+            return lab;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public Equipos[] arrayToArreglo(ArrayList<Equipos> eqps) {

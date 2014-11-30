@@ -1,1 +1,7 @@
 Debe configurar la ip del servicio  web y del equipo que hara de servidor.
+
+ALTER TABLE ingresolaboratoriodb.usuarios ADD COLUMN bloqueado INT NOT NULL AFTER rol_usuario;
+
+ALTER TABLE ingresolaboratoriodb.laboratorios ADD COLUMN bloqueado INT NOT NULL AFTER descripcion;
+
+ALTER TABLE ingresolaboratoriodb.equipos ADD COLUMN bloqueado INT NOT NULL AFTER estado;

@@ -33,8 +33,8 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         lab = new Laboratorios();
         initComponents();
         fl = new FuncionesLaboratorio();
+        btnEli.setVisible(false);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//evita cerra jframe con ALT+C
-
         this.setAlwaysOnTop(true);//siempre al frente       
         //nueva instancia de Bloquea pasando como parametros e este JFrame
 
@@ -60,6 +60,7 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDes = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
+        btnEli = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,11 +74,6 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         jPanel1.add(jLabel1, gridBagConstraints);
 
         txtCod.setFont(new java.awt.Font("Calibri Light", 0, 36)); // NOI18N
-        txtCod.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodActionPerformed(evt);
-            }
-        });
         txtCod.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCodKeyReleased(evt);
@@ -173,15 +169,23 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         gridBagConstraints.gridy = 0;
         jPanel1.add(jButton3, gridBagConstraints);
 
+        btnEli.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnEli.setText("Bloquear");
+        btnEli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        jPanel1.add(btnEli, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         setSize(new java.awt.Dimension(872, 465));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtCodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodActionPerformed
-
-    }//GEN-LAST:event_txtCodActionPerformed
 
     private void txtCodKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodKeyTyped
         if (txtCod.getText().length() >= 10) {
@@ -253,10 +257,17 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         if (c == 10) {
             lab = fl.obtieneDatosLaboratorio(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/cod=" + cod));
             if (lab != null) {
+                btnEli.setVisible(true);
+                if (lab.getBloqueado() == 0) {
+                    btnEli.setText("Bloquear");
+                } else {
+                    btnEli.setText("Desbloquear");
+                }
                 btnGuardar.setText("Actualizar");
                 txtDes.setText(lab.getDescripcion());
                 txtNom.setText(lab.getNombre());
             } else {
+                btnEli.setVisible(true);
                 btnGuardar.setText("Guardar");
                 txtDes.setText("");
                 txtNom.setText("");
@@ -276,7 +287,34 @@ public class RegistraLaboratorio extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtNomKeyTyped
 
+    private void btnEliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliActionPerformed
+        String valor = "desbloque";
+        if (btnEli.getText().equals("Bloquear")) {
+            valor = "bloque";
+        }
+        int x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea " + valor + "ar el laboratorio:\n" + lab.getNombre());
+
+        if (x == 0) {
+
+            if (x == 0) {
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/" + valor + "ar/" + lab.getCodigo();
+                String val = f.obtieneTexto(url);
+                if (val.equals("true")) {
+                    JOptionPane.showMessageDialog(rootPane, "Laboratorio " + valor + "ado correctamente");
+                    btnEli.setVisible(false);
+                    txtDes.setText("");
+                    txtNom.setText("");
+                    btnGuardar.setText("Guardar");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo " + valor + "ar el laboratorio");
+                }
+            }
+
+        }
+    }//GEN-LAST:event_btnEliActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEli;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;

@@ -11,7 +11,16 @@ public class Equipos {
     private int numero;
     private int estado;
     private int idEquipo;
+    private int bloqueado;
     private Laboratorios idLaboratorio;
+
+    public int getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(int bloqueado) {
+        this.bloqueado = bloqueado;
+    }
 
     public String getMac() {
         return mac;

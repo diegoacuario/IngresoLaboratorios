@@ -14,8 +14,9 @@ public class Usuarios {
     private String celular;
     private int rolUsuario;
     private int idUsuario;
+    private int bloqueado;
 
-    public Usuarios(String cedula, String clave, String nombres, String apellidos, String correo, String celular, int rolUsuario, int idUsuario) {
+    public Usuarios(String cedula, String clave, String nombres, String apellidos, String correo, String celular, int rolUsuario, int idUsuario,int bloqueado) {
         this.cedula = cedula;
         this.clave = clave;
         this.nombres = nombres;
@@ -24,6 +25,7 @@ public class Usuarios {
         this.celular = celular;
         this.rolUsuario = rolUsuario;
         this.idUsuario = idUsuario;
+        this.bloqueado = bloqueado;
     }
 
     public int getIdUsuario() {
@@ -61,6 +63,14 @@ public class Usuarios {
 
     public void setClave(String clave) {
         this.clave = clave;
+    }
+
+    public int getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(int bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public String getNombres() {

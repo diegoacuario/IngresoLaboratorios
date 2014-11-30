@@ -73,7 +73,7 @@ public class SeleccioneLaboratorio extends javax.swing.JFrame {
     private void ejecutarAlPresionarBoton(java.awt.event.ActionEvent evt) {
         JButton boton = (JButton) evt.getSource();
         if (boton.getBackground().equals(Color.green)) {
-            l = new Laboratorios(Integer.parseInt(boton.getText().split(":")[0]), boton.getToolTipText().split(": ")[0], boton.getText().split(": ")[1], boton.getToolTipText().split(": ")[1]);
+            l = new Laboratorios(Integer.parseInt(boton.getText().split(":")[0]), boton.getToolTipText().split(": ")[0], boton.getText().split(": ")[1], boton.getToolTipText().split(": ")[1],0);
             SeleccioneEquipo e = new SeleccioneEquipo(l, u);
             e.setVisible(true);
             dispose();

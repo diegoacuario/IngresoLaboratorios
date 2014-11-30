@@ -17,7 +17,7 @@ import modelo.Laboratorios;
 public class RegistraEquipo extends javax.swing.JDialog {
 
     private final MenuAdministrador m;
-    private final Funciones fe;
+    private final Funciones f;
     private final FuncionesEquipo fEqp;
     private final FuncionesLaboratorio fl;
     private Equipos eqp;
@@ -33,11 +33,13 @@ public class RegistraEquipo extends javax.swing.JDialog {
         super(parent, modal);
         this.m = m;
         this.setUndecorated(true);//quita bordes a jframe
+
         initComponents();
-        fe = new Funciones();
+        btnEli.setVisible(false);
+        f = new Funciones();
         fEqp = new FuncionesEquipo();
         fl = new FuncionesLaboratorio();
-        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
+        Laboratorios lab[] = fl.arrayToMatriz(fl.obtieneDatosLaboratorios(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.laboratorios/")));
         String nomLab[] = new String[lab.length];
         for (int i = 0; i < nomLab.length; i++) {
             nomLab[i] = lab[i].getIdLaboratorio() + ": " + lab[i].getNombre();
@@ -71,6 +73,7 @@ public class RegistraEquipo extends javax.swing.JDialog {
         jcbLaboratorios = new javax.swing.JComboBox();
         jcbEstado = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
+        btnEli = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -87,11 +90,6 @@ public class RegistraEquipo extends javax.swing.JDialog {
         txtiP.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtiPFocusLost(evt);
-            }
-        });
-        txtiP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtiPActionPerformed(evt);
             }
         });
         txtiP.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -220,6 +218,19 @@ public class RegistraEquipo extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jPanel1.add(jLabel5, gridBagConstraints);
 
+        btnEli.setFont(new java.awt.Font("Calibri Light", 1, 36)); // NOI18N
+        btnEli.setText("Bloquear");
+        btnEli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        jPanel1.add(btnEli, gridBagConstraints);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         setSize(new java.awt.Dimension(678, 465));
@@ -230,10 +241,6 @@ public class RegistraEquipo extends javax.swing.JDialog {
         setVisible(false);
         m.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void txtiPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtiPActionPerformed
-
-    }//GEN-LAST:event_txtiPActionPerformed
 
     private void txtiPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtiPKeyTyped
         char c = evt.getKeyChar();
@@ -317,15 +324,22 @@ public class RegistraEquipo extends javax.swing.JDialog {
         char c = evt.getKeyChar();
         String ip = txtiP.getText();
         if (c == 10) {
-            eqp = fEqp.obtieneDatosEquipo(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+            eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
             if (eqp != null) {
+                if (eqp.getBloqueado() == 0) {
+                    btnEli.setText("Bloquear");
+                } else {
+                    btnEli.setText("Desbloquear");
+                }
+                btnEli.setVisible(true);
                 btnGuardar.setText("Actualizar");
                 jcbEstado.setSelectedIndex(eqp.getEstado());
                 jcbLaboratorios.setSelectedItem(eqp.getIdLaboratorio().getIdLaboratorio() + ": " + eqp.getIdLaboratorio().getNombre() + "");
                 txtMac.setText(eqp.getMac());
                 txtNumero.setText(eqp.getNumero() + "");
             } else {
-                boolean ping = fe.ping(ip);
+                btnEli.setVisible(false);
+                boolean ping = f.ping(ip);
                 if (ping) {
                     jcbEstado.setSelectedIndex(0);
                 } else {
@@ -345,30 +359,67 @@ public class RegistraEquipo extends javax.swing.JDialog {
     }//GEN-LAST:event_txtMacKeyReleased
 
     private void txtiPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtiPFocusLost
-        String ip = txtiP.getText();
-        eqp = fEqp.obtieneDatosEquipo(fe.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
-        if (eqp != null) {
-            btnGuardar.setText("Actualizar");
-            jcbEstado.setSelectedIndex(eqp.getEstado());
-            jcbLaboratorios.setSelectedItem(eqp.getIdLaboratorio().getIdLaboratorio() + ": " + eqp.getIdLaboratorio().getNombre() + "");
-            txtMac.setText(eqp.getMac());
-            txtNumero.setText(eqp.getNumero() + "");
-        } else {
-            boolean ping = fe.ping(ip);
-            if (ping) {
-                jcbEstado.setSelectedIndex(0);
+        if (getContentPane().isVisible()) {
+            String ip = txtiP.getText();
+            eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+            if (eqp != null) {
+                if (eqp.getBloqueado() == 0) {
+                    btnEli.setText("Bloquear");
+                } else {
+                    btnEli.setText("Desbloquear");
+                }
+                btnEli.setVisible(true);
+                btnGuardar.setText("Actualizar");
+                jcbEstado.setSelectedIndex(eqp.getEstado());
+                jcbLaboratorios.setSelectedItem(eqp.getIdLaboratorio().getIdLaboratorio() + ": " + eqp.getIdLaboratorio().getNombre() + "");
+                txtMac.setText(eqp.getMac());
+                txtNumero.setText(eqp.getNumero() + "");
             } else {
-                jcbEstado.setSelectedIndex(2);
+                btnEli.setVisible(false);
+                boolean ping = f.ping(ip);
+                if (ping) {
+                    jcbEstado.setSelectedIndex(0);
+                } else {
+                    jcbEstado.setSelectedIndex(2);
+                }
+                btnGuardar.setText("Guardar");
+                txtMac.setText("");
+                txtNumero.setText("");
+                jcbLaboratorios.setSelectedIndex(0);
             }
-            btnGuardar.setText("Guardar");
-            txtMac.setText("");
-            txtNumero.setText("");
-            jcbLaboratorios.setSelectedIndex(0);
         }
+
     }//GEN-LAST:event_txtiPFocusLost
+
+    private void btnEliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliActionPerformed
+        String valor = "desbloque";
+        if (btnEli.getText().equals("Bloquear")) {
+            valor = "bloque";
+        }
+        int x = JOptionPane.showConfirmDialog(rootPane, "Seguro desea " + valor + "ar el equipo con ip:\n" + eqp.getIp());
+
+        if (x == 0) {
+
+            if (x == 0) {
+                String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/" + valor + "ar/" + eqp.getIp();
+                String val = f.obtieneTexto(url);
+                if (val.equals("true")) {
+                    JOptionPane.showMessageDialog(rootPane, "Equipo " + valor + "ado correctamente");
+                    btnEli.setVisible(false);
+                    txtMac.setText("");
+                    txtNumero.setText("");
+                    btnGuardar.setText("Guardar");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo " + valor + "ar el equipo");
+                }
+            }
+
+        }
+    }//GEN-LAST:event_btnEliActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEli;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
