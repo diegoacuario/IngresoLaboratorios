@@ -12,13 +12,13 @@ import vista.SeleccioneEquipo;
  */
 public class HiloICMP extends Thread {
 
-    private final SeleccioneEquipo s;
+    private final SeleccioneEquipo seleccioneEquipo;
     private final FuncionesEquipo fEqp;
     private final Funciones f;
 
     public HiloICMP(SeleccioneEquipo s) {
         //s.getBotones()[0][0].setBackground(Color.blue);
-        this.s = s;
+        this.seleccioneEquipo = s;
         fEqp = new FuncionesEquipo();
         f = new Funciones();
     }
@@ -28,46 +28,45 @@ public class HiloICMP extends Thread {
         while (true) {
             try {
                 int c = 0;
-                for (JButton[] filaBotones : s.getBotones()) {
-                    for (JButton cadaBtn : filaBotones) {
+                for (JButton[] filaBotones : seleccioneEquipo.getBotones()) {
+                    for (JButton cadaBoton : filaBotones) {
                         try {
-                            String texto = ((JLabel) cadaBtn.getComponent(0)).getText();
+                            String texto = ((JLabel) cadaBoton.getComponent(0)).getText();
                             String ip = texto.split(" ")[3];
-                            Equipos eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
-                            int estado = eqp.getEstado();
-                            System.out.println(estado);
+                            Equipos equipo = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
+                            int estado = equipo.getEstado();
                             if (estado == 0) {
-                                cadaBtn.setBackground(Color.GREEN);
+                                cadaBoton.setBackground(Color.GREEN);
                                 if (!f.ping(ip)) {
                                     String res;
                                     try {
                                         res = fEqp.editarEquipoEstado(
                                                 Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
-                                                s.getEquipos()[c].getIdEquipo(), 2);
+                                                seleccioneEquipo.getEquipos()[c].getIdEquipo(), 2);
                                     } catch (Exception ex) {
                                         res = "false";
                                     }
                                     if (res.equals("true")) {
-                                        cadaBtn.setBackground(Color.YELLOW);
-                                        cadaBtn.setToolTipText("Equipo no disponible");
+                                        cadaBoton.setBackground(Color.YELLOW);
+                                        cadaBoton.setToolTipText("Equipo no disponible");
                                     }
                                 }
                             } else if (estado == 1) {
-                                cadaBtn.setBackground(Color.RED);
+                                cadaBoton.setBackground(Color.RED);
                             } else if (estado == 2) {
-                                cadaBtn.setBackground(Color.YELLOW);
+                                cadaBoton.setBackground(Color.YELLOW);
                                 if (f.ping(ip)) {
                                     String res;
                                     try {
                                         res = fEqp.editarEquipoEstado(
                                                 Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
-                                                s.getEquipos()[c].getIdEquipo(), 0);
+                                                seleccioneEquipo.getEquipos()[c].getIdEquipo(), 0);
                                     } catch (Exception ex) {
                                         res = "false";
                                     }
                                     if (res.equals("true")) {
-                                        cadaBtn.setBackground(Color.GREEN);
-                                        cadaBtn.setToolTipText("Equipo disponible");
+                                        cadaBoton.setBackground(Color.GREEN);
+                                        cadaBoton.setToolTipText("Equipo disponible");
                                     }
                                 }
                             }
