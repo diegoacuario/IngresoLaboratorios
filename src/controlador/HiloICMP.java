@@ -35,6 +35,7 @@ public class HiloICMP extends Thread {
                             String ip = texto.split(" ")[3];
                             Equipos eqp = fEqp.obtieneDatosEquipo(f.obtieneJsonGet(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/ip=" + ip));
                             int estado = eqp.getEstado();
+                            System.out.println(estado);
                             if (estado == 0) {
                                 cadaBtn.setBackground(Color.GREEN);
                                 if (!f.ping(ip)) {
@@ -55,6 +56,20 @@ public class HiloICMP extends Thread {
                                 cadaBtn.setBackground(Color.RED);
                             } else if (estado == 2) {
                                 cadaBtn.setBackground(Color.YELLOW);
+                                if (f.ping(ip)) {
+                                    String res;
+                                    try {
+                                        res = fEqp.editarEquipoEstado(
+                                                Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.equipos/editar/",
+                                                s.getEquipos()[c].getIdEquipo(), 0);
+                                    } catch (Exception ex) {
+                                        res = "false";
+                                    }
+                                    if (res.equals("true")) {
+                                        cadaBtn.setBackground(Color.GREEN);
+                                        cadaBtn.setToolTipText("Equipo disponible");
+                                    }
+                                }
                             }
                             c++;
                         } catch (NullPointerException e) {
@@ -62,7 +77,7 @@ public class HiloICMP extends Thread {
                         }
                     }
                 }
-                sleep(2000);
+                sleep(5000);
             } catch (InterruptedException ex) {
 
             }

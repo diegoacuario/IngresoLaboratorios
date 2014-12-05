@@ -162,7 +162,7 @@ public class MenuAdministrador extends javax.swing.JFrame {
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
         this.setVisible(false);
-        new RegistraUsuario(null, rootPaneCheckingEnabled, this, u).setVisible(true);
+        new RegistraUsuario(null, rootPaneCheckingEnabled, this, u,null).setVisible(true);
     }//GEN-LAST:event_btnUserActionPerformed
 
     /**

@@ -18,6 +18,7 @@ public class RegistraUsuario extends javax.swing.JDialog {
 
     private final Usuarios u;
     private final MenuAdministrador m;
+    private final MenuEstudiante me;
     private final Funciones f;
     private final FuncionesUsuario fUser;
     private Usuarios user;
@@ -30,11 +31,12 @@ public class RegistraUsuario extends javax.swing.JDialog {
      * @param m
      * @param u
      */
-    public RegistraUsuario(java.awt.Frame parent, boolean modal, MenuAdministrador m, Usuarios u) {
+    public RegistraUsuario(java.awt.Frame parent, boolean modal, MenuAdministrador m, Usuarios u, MenuEstudiante me) {
         super(parent, modal);
         this.u = u;
         user = u;
         this.m = m;
+        this.me = me;
         initComponents();
         if (m == null && u != null) {
             jCheckBox1.setVisible(false);
@@ -296,7 +298,9 @@ public class RegistraUsuario extends javax.swing.JDialog {
         if (m != null) {
             m.setVisible(true);
         }
-
+        if (me != null) {
+            me.setVisible(true);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCedulaKeyTyped
@@ -372,6 +376,9 @@ public class RegistraUsuario extends javax.swing.JDialog {
                                             if (m != null) {
                                                 m.setVisible(true);
                                             }
+                                            if (me != null) {
+                                                me.setVisible(true);
+                                            }
                                         } else {
                                             ((Component) evt.getSource()).transferFocus();
                                         }
@@ -393,6 +400,9 @@ public class RegistraUsuario extends javax.swing.JDialog {
                                         txtCorreo.setText("");
                                         if (m != null) {
                                             m.setVisible(true);
+                                        }
+                                        if (me != null) {
+                                            me.setVisible(true);
                                         }
                                     } else {
                                         ((Component) evt.getSource()).transferFocus();

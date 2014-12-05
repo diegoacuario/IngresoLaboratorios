@@ -131,7 +131,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         dispose();
-        new RegistraUsuario(null, rootPaneCheckingEnabled, null, u).setVisible(true);
+        new RegistraUsuario(null, rootPaneCheckingEnabled, null, u,this).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

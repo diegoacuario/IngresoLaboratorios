@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,7 +58,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
     public SeleccioneEquipo(Laboratorios l, Usuarios u) {
         this.u = u;
         this.setUndecorated(true);//quita bordes a jframe
-        
+
         initComponents();
         f = new Funciones();
         fl = new FuncionesEquipo();
@@ -128,20 +130,24 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                 boton.setBackground(Color.green);
                 boton.setToolTipText("Equipo disponible, clic para iniciar sesión");
             } else {
+
                 String res1;
                 Equipos eqp = null;
+
                 try {
                     int numEqp = Integer.parseInt(boton.getText().split(": ")[0].split("-")[1]);
                     for (Equipos equipo : equipos) {
-                        if (numEqp == equipo.getIdEquipo()) {
+                        if (numEqp == equipo.getNumero()) {
                             eqp = equipo;
+                            break;
                         }
                     }
-                    res1 = fs.registrarSesion(Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/",
-                            eqp.getIdEquipo(), u.getIdUsuario());
+                    String url = Funciones.getFileProperties("classes/confi.properties").getProperty("servicio_web") + "webresources/modelo.sesiones/registro/";
+                    res1 = fs.registrarSesion(url, eqp.getIdEquipo(), u.getIdUsuario());
                 } catch (Exception ex) {
                     res1 = "false";
                 }
+                System.exit(0);
                 if (res1.equals("false")) {
                     dispose();
                     new Login(0).setVisible(true);
@@ -165,9 +171,7 @@ public class SeleccioneEquipo extends javax.swing.JFrame {
                     }
                     jButton2.setEnabled(false);
                 }
-
             }
-
         } else if (boton.getBackground().equals(Color.yellow)) {
             JOptionPane.showMessageDialog(rootPane, "El equipo no esta disponible");
         } else if (boton.getBackground().equals(Color.red)) {

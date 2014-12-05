@@ -327,7 +327,7 @@ public final class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        new RegistraUsuario(this, rootPaneCheckingEnabled, null, u).setVisible(true);
+        new RegistraUsuario(this, rootPaneCheckingEnabled, null, u,null).setVisible(true);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtClaveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClaveKeyTyped
