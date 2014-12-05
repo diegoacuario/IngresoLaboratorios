@@ -16,25 +16,25 @@ import modelo.Usuarios;
  */
 public class MenuEstudiante extends javax.swing.JDialog {
 
-    private final Menu m;
+    private final Menu menu;
     private final Usuarios u;
-    private Sesiones s;
-    private FuncionesSesiones fs;
-    private FuncionesEquipo fe;
-    private Funciones f;
+    private final Sesiones s;
+    private final FuncionesSesiones fs;
+    private final FuncionesEquipo fe;
+    private final Funciones f;
 
     /**
      * Creates new form RegistraPersona
      *
      * @param parent
      * @param modal
-     * @param m
+     * @param menu
      * @param u
      * @param s
      */
-    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu m, Usuarios u, Sesiones s) {
+    public MenuEstudiante(java.awt.Frame parent, boolean modal, Menu menu, Usuarios u, Sesiones s) {
         super(parent, modal);
-        this.m = m;
+        this.menu = menu;
         this.u = u;
         this.s = s;
         fs = new FuncionesSesiones();
@@ -43,6 +43,7 @@ public class MenuEstudiante extends javax.swing.JDialog {
         this.setUndecorated(true);//quita bordes a jframe
         initComponents();
         this.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 System.exit(0);
             }
@@ -126,12 +127,12 @@ public class MenuEstudiante extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
-        m.setVisible(true);
+        menu.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         dispose();
-        new RegistraUsuario(null, rootPaneCheckingEnabled, null, u,this).setVisible(true);
+        new RegistraUsuario(null, rootPaneCheckingEnabled, null, u, this).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

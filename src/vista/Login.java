@@ -305,6 +305,7 @@ public final class Login extends javax.swing.JFrame {
                                     Menu m = new Menu(null, u, null, eqp);
                                     m.setVisible(true);
                                     dispose();
+                                    hiloVerificaSesiones.stop();
                                 } else {
                                     JOptionPane.showMessageDialog(rootPane, "Equipo no esta registrado informe al administrador");
                                     dispose();

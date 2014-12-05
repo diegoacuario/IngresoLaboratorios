@@ -16,16 +16,16 @@ public class HiloSesiones extends Thread {
     private final String miIp, ipSerWeb;
     private final int port;
     private final FuncionesSesiones fs;
-    private final Login l;
+    private final Login login;
     private boolean isConected;
     private final Equipos eqp;
     private Socket socket;
 
-    public HiloSesiones(String miIp, Login l, Sesiones s, String ipSerWeb, int port, Equipos eqp) {
+    public HiloSesiones(String miIp, Login login, Sesiones s, String ipSerWeb, int port, Equipos eqp) {
         this.miIp = miIp;
         this.port = port;
         this.ipSerWeb = ipSerWeb;
-        this.l = l;
+        this.login = login;
         this.eqp = eqp;
         isConected = false;
         fs = new FuncionesSesiones();
@@ -50,13 +50,13 @@ public class HiloSesiones extends Thread {
                     isConected = false;
                 }
                 if (s != null) {
-                    l.dispose();
+                    login.dispose();
                     Menu m = new Menu(null, s.getIdUsuario(), s, eqp);
                     m.setVisible(true);
                     stop();
                 }
-                l.getBtnEntrar().setEnabled(isConected);
-                l.getBtnRegistrar().setEnabled(isConected);
+                login.getBtnEntrar().setEnabled(isConected);
+                login.getBtnRegistrar().setEnabled(isConected);
                 sleep(3000);
             } catch (InterruptedException ex) {
                 new Login(0).setVisible(true);

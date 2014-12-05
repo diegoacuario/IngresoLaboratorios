@@ -3,7 +3,10 @@ package vista;
 import controlador.Funciones;
 import controlador.FuncionesEquipo;
 import controlador.FuncionesSesiones;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
+import modelo.Bloquea;
 import modelo.Equipos;
 import modelo.Sesiones;
 import modelo.Usuarios;
@@ -12,9 +15,9 @@ import modelo.Usuarios;
  * @web http://www.diegoacuario.blogspot.com
  * @author diegoacuario
  */
-public class Menu extends javax.swing.JFrame {
+public class Menu extends javax.swing.JDialog {
 
-    private MenuEstudiante m;
+    private MenuEstudiante menuEstudiante;
     private FuncionesSesiones fs;
     private Funciones f;
     private FuncionesEquipo fe;
@@ -25,11 +28,12 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      *
-     * @param m
+     * @param menuEstudiante
      * @param u
      * @param s
+     * @param eqp
      */
-    public Menu(MenuEstudiante m, Usuarios u, Sesiones s, Equipos eqp) {
+    public Menu(MenuEstudiante menuEstudiante, Usuarios u, Sesiones s, Equipos eqp) {
         this.u = u;
         fs = new FuncionesSesiones();
         fe = new FuncionesEquipo();
@@ -69,14 +73,15 @@ public class Menu extends javax.swing.JFrame {
                 System.exit(0);
             }
         }
-        if (m == null) {
-            this.m = new MenuEstudiante(this, rootPaneCheckingEnabled, this, this.u, s);
+        if (menuEstudiante == null) {
+            this.menuEstudiante = new MenuEstudiante(null, rootPaneCheckingEnabled, this, this.u, s);
         }
         setUndecorated(true);//quita bordes a jframe
         initComponents();
-        setExtendedState(MAXIMIZED_BOTH);//maximizado        
         setVisible(true);
-        setBounds(getWidth() - 120, (getHeight() / 2) - 20, 120, 40);
+//        setBounds(getWidth() - 120, (getHeight() / 2) - 20, 120, 40);
+        Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((int) (d.getWidth()- 120), (int) ((d.getHeight() / 2) - 20), 120, 40);
         setAlwaysOnTop(true);//siempre al frente   
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     }
@@ -108,24 +113,20 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 274, Short.MAX_VALUE))
+            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 259, Short.MAX_VALUE))
+            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setSize(new java.awt.Dimension(416, 339));
+        setSize(new java.awt.Dimension(142, 80));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
-        m.setVisible(true);
+        menuEstudiante.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
